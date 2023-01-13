@@ -10,7 +10,7 @@ import {
 } from 'reactflow';
 import { SecondExpSB } from '../components/experimentSidebars/SecondExpSB';
 
-export const Workspace = () => {
+ const Workspace = () => {
 
     const reactFlowWrapper = useRef(null);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -65,7 +65,9 @@ export const Workspace = () => {
             <aside style={{width:'6vw'}} className='absolute top-32 bottom-32 right-4 bg-white shadow-xl border-gray-200 border-2 m-0 z-10 flex flex-col justify-around items-center overflow-x-hidden overflow-y-auto rounded-lg' >
                 <SecondExpSB />
             </aside>
-            <div className=' w-screen h-screen m-0 p-0' ref={reactFlowWrapper} >
+            <div className='m-0 p-0' ref={reactFlowWrapper}
+             style={{ height: 'calc(100vh - 11.5rem)' }}
+            >
                 <ReactFlow
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
@@ -83,3 +85,4 @@ export const Workspace = () => {
         </ReactFlowProvider>
     )
 }
+export default Workspace

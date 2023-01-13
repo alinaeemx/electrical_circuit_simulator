@@ -1,12 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from 'react'; 
+import './index.css'; 
+import arEG from "antd/lib/locale/ar_EG";
+import "animate.css"; 
+import { BrowserRouter } from "react-router-dom";
+import { ConfigProvider, theme } from "antd";
+ 
+import { createRoot } from 'react-dom/client'; 
 import App from './App';
-import { HashRouter } from 'react-router-dom';
+console.log(theme);
+const Index = () => { 
+  return (
+    <ConfigProvider
+      // direction="rtl"
+      // locale={arEG}
+      csp={{ nonce: "YourNonceCode" }}
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <HashRouter>
-    <App />
-  </HashRouter>
-);
+      theme={{
+        token: { 
+          colorPrimary: "#7f66d6",
+          // // colorTextBase: "#ffeeee",
+          // colorBgHeader: "#7f66d6",
+          // algorithm: theme.darkAlgorithm,
+          
+        },
+      }}
+
+    >
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ConfigProvider>
+  );
+};
+
+// render(<Index />, document.getElementById("root"));
+
+
+const container = document.getElementById('root');
+const root = createRoot(container); // createRoot(container!) if you use TypeScript
+root.render(<Index />);
