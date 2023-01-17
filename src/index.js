@@ -4,15 +4,14 @@ import arEG from "antd/lib/locale/ar_EG";
 import "animate.css"; 
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider, theme } from "antd";
- 
 import { createRoot } from 'react-dom/client'; 
-import App from './App';
+import App from './App'; 
 console.log(theme);
 const Index = () => { 
   return (
     <ConfigProvider
-      // direction="rtl"
-      // locale={arEG}
+      direction="rtl"
+      locale={arEG}
       csp={{ nonce: "YourNonceCode" }}
 
       theme={{
@@ -32,10 +31,7 @@ const Index = () => {
     </ConfigProvider>
   );
 };
-
 // render(<Index />, document.getElementById("root"));
-
-
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(<Index />);

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
   Layout,
-  BackTop,
+  // BackTop,
 } from "antd";
 import { Navbar } from './navbar/index';
-import { Sidebar } from "./sidebar/index";
-import { BreadcrumbCom } from "./breadcrumb";
+// import { Sidebar } from "./sidebar/index";
+// import { BreadcrumbCom } from "./breadcrumb";
 // import { ThemeDrawer } from "./themeDrawer";
 import Draggable from "react-draggable";  
 import { TITLE_FOOTER } from "../../constants/constants";
@@ -15,10 +15,10 @@ export const AppContainer = ({ children }) => {
 
   return (
     <Layout>
-      <Sidebar
+      {/* <Sidebar
         collapsed={collapsed}
         setCollapsed={setCollapsed}
-      />
+      /> */}
       <Layout>
         <Navbar
           collapsed={collapsed}
@@ -32,7 +32,7 @@ export const AppContainer = ({ children }) => {
 
           <div className="preview mx-4 mt-4 mb-0"
           >
-            <BreadcrumbCom />
+            {/* <BreadcrumbCom /> */}
             {children}
           </div>
         </Content>
@@ -42,17 +42,12 @@ export const AppContainer = ({ children }) => {
           }}
           className="h-16 text-center "
         >
-          {/* {TITLE_FOOTER}  */}
-          <div className="text-center flex justify-center items-center flex-col">
+          {TITLE_FOOTER} 
+          {/* <div className="text-center flex justify-center items-center flex-col">
                     <div>
                     {TITLE_FOOTER} 
-                    </div>
-                    {/* <div className='primaryColor'>
-
-                        by IT-DOTE
-                    </div> */}
-
-                </div>
+                    </div>  
+                </div> */}
         </Footer>
 
       </Layout>
@@ -65,7 +60,7 @@ export const AppContainer = ({ children }) => {
         </div>
       </Draggable>
 
-      <BackTop
+      {/* <BackTop
 
         style={{
           position: 'fixed',
@@ -80,7 +75,7 @@ export const AppContainer = ({ children }) => {
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
         </svg>
-      </BackTop>
+      </BackTop> */}
     </Layout>
 
   );

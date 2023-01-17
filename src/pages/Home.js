@@ -1,34 +1,62 @@
-import { Button, Card } from 'antd';
+import { Card, Typography } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+const { Meta } = Card;
+const { Title } = Typography;
 
- 
- 
-  const HomePage = () => {
-    const navigate = useNavigate();
-    const { Meta } = Card;
-  return (
-    <div className='flex gap-2'>
-     {[1,2,3,4].map((item,index)=>( <Card
-     key={index}
-        hoverable
-        onClick={()=>{ navigate('/ex1')}}
-        style={{
-          width: 240,
-        }}
-        // cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-      >
-        <Meta title="Europe Street beat" description="www.instagram.com" />
-      </Card>))}
+
+
+const HomePage = () => {
+  const navigate = useNavigate();
+  const list = [
+    {
+      title: 'Experiment 1',
+      description: 'Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1',
+      path: '/ex1'
+    },
+    {
+      title: 'Experiment 1',
+      description: 'Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1',
+      path: '/ex1'
+    },
+    {
+      title: 'Experiment 1',
+      description: 'Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1',
+      path: '/ex1'
+    },
+    {
+      title: 'Experiment 1',
+      description: 'Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1',
+      path: '/ex1'
+    },
+    {
+      title: 'Experiment 1',
+      description: 'Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1 Experiment 1',
+      path: '/ex1'
+    },
+  ]
+  return (<>
+    <div
+      style={{
+        height: ' 21vh'
+      }}
+      className='flex justify-center items-end mx-4'>
+      <Title level={2}>Experiments</Title>
     </div>
-    // return (
-    //     <div className="pageContainer" >
-    //         <div style={{ height: '100%', width: '100%', background: 'red' }} >
-    //             <Button type='primary' onClick={() => {
-    //                 navigate('/ex1')
-    //             }} >Next</Button>
-    //         </div>
-    //     </div>
-    )
+    <div className='flex justify-center items-center flex-col'>
+      <div className='grid lg:grid-cols-4 xl:grid-cols-4 gap-4'>
+        {list.map((item, index) => (<Card
+          key={index}
+          hoverable
+          onClick={() => { navigate(item.path) }}
+
+        >
+          <Meta title={item.title} description={item.description} />
+        </Card>))}
+      </div>
+    </div>
+
+
+  </>)
 }
 export default HomePage
