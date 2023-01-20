@@ -55,7 +55,7 @@ import { SecondExpSB } from '../components/experimentSidebars/SecondExpSB';
         let isRendered = true;
         if (isRendered) {
             if (document.getElementsByTagName('a').length > 0) {
-                document.getElementsByTagName('a')[0].style.display = 'none'
+                // document.getElementsByTagName('a')[0].style.display = 'none'
             }
         }
         return () => (isRendered = false)

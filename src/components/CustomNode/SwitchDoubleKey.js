@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
-import { select } from 'd3-selection'; 
- 
+import { select } from 'd3-selection';
+
 import styles from './style/style.module.css';
 import { Image } from 'antd';
 import switchCueArrow from "../../assets/images/switchCueArrow.png";
@@ -43,7 +43,7 @@ function SwitchDoubleKey({
         }}
         className={styles.node}
       >
-        
+
         <div
           ref={rotateControlRef}
           style={{
@@ -66,24 +66,29 @@ function SwitchDoubleKey({
           }}
 
         >
-          <Handle isConnectable={isConnectable} className="ml-1 z-50 " type="target" position="left" />
+          <Handle
+            style={{
+              background: 'blue'
+            }}
+            isConnectable={isConnectable} className="ml-1 z-50 " type="target" position="left" />
           <Handle
             id="t"
             style={{
               marginTop: '-35px',
-              marginRight: '4px'
+              marginRight: '4px', background: 'red'
             }}
             isConnectable={isConnectable}
-            className=" z-50 " type="source" position="right" />
+            className=" z-50" type="source" position="right" />
           <Handle
             id="b"
             style={{
               marginTop: '35px',
               marginRight: '4px'
+              , background: 'red'
             }}
             isConnectable={isConnectable}
             className="z-50 " type="source" position="right" />
-          <Image preview={false} src={keyOpenClose} className="" />
+          <Image preview={false} src={keyOpenClose} />
         </div>
       </div>
     </>

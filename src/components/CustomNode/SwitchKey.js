@@ -66,9 +66,15 @@ import closeKey from "../../assets/images/closeKey.png";
          
         >
           <Handle 
+          style={{ 
+            background:'blue'
+         }}
            isConnectable={isConnectable}
           className="mt-1 z-50 " type="target" position="left" />
           <Handle  
+          style={{ 
+            background:'red'
+         }}
             isConnectable={isConnectable}
             className="mt-1 z-50 " type="source" position="right" />
          

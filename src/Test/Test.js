@@ -1,20 +1,20 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactFlow, {
   addEdge,
   MiniMap,
   Controls,
   Background,
   useNodesState,
-  useEdgesState, 
+  useEdgesState,
   updateEdge,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
- 
-import 'reactflow/dist/style.css'; 
+
+import 'reactflow/dist/style.css';
 import { Button } from 'antd';
- 
-import { GlobalStore } from '../store'; 
+
+import { GlobalStore } from '../store';
 import Battery from '../components/CustomNode/Battery'
 import Led from '../components/CustomNode/Led'
 import SwitchKey from '../components/CustomNode/SwitchKey'
@@ -22,7 +22,7 @@ import Capacity from '../components/CustomNode/Capacity'
 import Voltage from '../components/CustomNode/Voltage'
 import SwitchDoubleKey from './../components/CustomNode/SwitchDoubleKey';
 import CustomConnectionLine from '../components/CustomNode/CustomConnectionLine';
-const nodeTypes = { 
+const nodeTypes = {
   Led,
   Battery,
   SwitchKey,
@@ -45,6 +45,24 @@ function start({ onHandled, time }) {
 function stop() {
   clearInterval(intervalID);
 }
+let reualtList = [
+  {
+    source: "battery1",
+    target: "led1",
+  },
+  {
+    source: "led1",
+    target: "battery1",
+  },
+  // {
+  //   source: "battery1",
+  //   target: "led1",
+  // },
+  // {
+  //   source: "battery1",
+  //   target: "led1",
+  // },
+]
 const OverviewFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -90,26 +108,137 @@ const OverviewFlow = () => {
     type: 'smoothstep',
   };
   const { setVolt } = GlobalStore();
- 
+  const [onLed, setOnLed] = useState('led')
+  const [capacity, setCapacity] = useState(0)
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === onLed) {
+          node.data = { ...node.data, onLed: 'on' }
+        } else {
+          node.data = { ...node.data, onLed: 'off' }
+        }
+
+        if (node.id === 'capacity1') {
+          node.data = { ...node.data, num: capacity }
+        }
+        return node;
+      })
+    );
+  }, [capacity, onLed, setNodes]);
+
+
 
   const onStart =
     () => {
+
+      reualtList.forEach((item, index) => {
+        let trueconect = edges.filter(it => it.source === item.source && it.target === item.target)
+        let falseconect = edges.filter(it => it.source !== item.source && it.target !== item.target)
+        console.log('trueconect', trueconect);
+        console.log('falseconect', falseconect);
+
+      })
+
       let body = document.querySelector('.bodyX');
-      let open = body.classList.toggle('on');  
+      let open = body.classList.toggle('on');
       if (open) {
         var x = 0
         start({
           onHandled: () => {
             x++
             setVolt(`${x}.00 v`)
-            if (x === 5) {
-              x = 0
+            if (x === 10) {
+              // x = 0
+              stop()
+              edges.map(item => { 
+                item.type = 'smoothstep'
+                item.animated = false
+                item.style = {
+                  strokeWidth: 3,
+                  stroke: '#FF0072',
+                }
+                return item
+              })
+              setOnLed('led')
+
+              start({
+                onHandled: () => {
+                  setOnLed('led2')
+                  edges.map(item => {
+
+                    // if (item.id === 'reactflow__edge-switch2t-led2') {
+                    //   return item
+                    // }
+                    // if (item.id === 'reactflow__edge-led2-voltage1') {
+                    //   return item
+                    // }
+          
+                    if (item.id === 'reactflow__edge-battery1-led1') {
+                      return item
+                    }
+                    if (item.id === 'reactflow__edge-led1-voltage1') {
+                      return item
+                    }
+          
+                    if (item.id === 'reactflow__edge-switch2b-battery1') {
+                      return item
+                    }
+                    item.type = 'smoothstep'
+                    item.animated = true
+                    item.style = {
+                      strokeWidth: 6,
+                      stroke: '#FF0072',
+                    }
+                    return item
+                  })
+                  x--
+                  setVolt(`${x}.00 v`)
+                  if (x === 0) {
+                    // x = 0
+                    stop()
+                    edges.map(item => {
+
+                      item.type = 'smoothstep'
+                      item.animated = false
+                      item.style = {
+                        strokeWidth: 3,
+                        stroke: '#FF0072',
+                      }
+                      return item
+                    })
+                    setOnLed('led')
+                  }
+                  setCapacity(x)
+                },
+                time: 1000,
+              })
             }
+            setCapacity(x)
           },
           time: 1000,
-        })
+        })  
+        setOnLed('led1')
         edges.map(item => {
-          // console.log(item);
+
+          if (item.id === 'reactflow__edge-switch2t-led2') {
+            return item
+          }
+          if (item.id === 'reactflow__edge-led2-voltage1') {
+            return item
+          }
+
+          // if (item.id === 'reactflow__edge-battery1-led1') {
+          //   return item
+          // }
+          // if (item.id === 'reactflow__edge-led1-voltage1') {
+          //   return item
+          // }
+
+          // if (item.id === 'reactflow__edge-switch2b-battery1') {
+          //   return item
+          // }
           item.type = 'smoothstep'
           item.animated = true
           item.style = {
@@ -128,6 +257,12 @@ const OverviewFlow = () => {
         setVolt(`0.00 v`)
         edges.map(item => {
           // console.log(item);
+          if (item.id === 'reactflow__edge-switch2t-led2') {
+            return item
+          }
+          if (item.id === 'reactflow__edge-led2-voltage1') {
+            return item
+          }
           item.type = 'smoothstep'
           item.animated = false
           item.style = {
@@ -145,9 +280,9 @@ const OverviewFlow = () => {
 
 
 
-     
+
     }
-    
+
   const edgeUpdateSuccessful = useRef(true);
 
   const onEdgeUpdateStart = useCallback(() => {
@@ -157,7 +292,7 @@ const OverviewFlow = () => {
   const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
     edgeUpdateSuccessful.current = true;
     setEdges((els) => updateEdge(oldEdge, newConnection, els));
-  }, []);
+  }, [setEdges]);
 
   const onEdgeUpdateEnd = useCallback((_, edge) => {
     if (!edgeUpdateSuccessful.current) {
@@ -165,7 +300,7 @@ const OverviewFlow = () => {
     }
 
     edgeUpdateSuccessful.current = true;
-  }, []);
+  }, [setEdges]);
 
   return (
     <div className='m-0 p-0'
@@ -177,7 +312,7 @@ const OverviewFlow = () => {
 
 
       <ReactFlow
-      id='ES'
+        id='ES'
         className='bodyX'
         title='abas'
         connectionLineStyle={connectionLineStyle}

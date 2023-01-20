@@ -59,8 +59,14 @@ function Battery({
                     style={{ width: "126px" }}
                     className=" flex items-center justify-center "
                 >
-                    <Handle className="mr-2 z-50 " type="target" position="bottom" />
-                    <Handle className="mr-2 z-50 " type="source" position="top" />
+                    <Handle style={{ 
+                        background:'blue'
+                     }} className="mr-2 z-50 " type="target" position="bottom" />
+                    <Handle 
+                    style={{ 
+                        background:'red'
+                     }}
+                    className="mr-2 z-50 " type="source" position="top" />
                     <Image preview={false} src={battery} className="" />
                 </div>
             </div>

@@ -6,14 +6,14 @@ import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
- 
+
 import styles from './style/style.module.css';
 import switchCueArrow from "../../assets/images/switchCueArrow.png";
- 
+
 function Voltage({
     id,
     // isConnectable
-}) { 
+}) {
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
@@ -43,7 +43,7 @@ function Voltage({
                     transform: `rotate(${rotation}deg)`,
                 }}
                 className={styles.node}
-            > 
+            >
                 <div
                     ref={rotateControlRef}
                     style={{
@@ -65,13 +65,13 @@ function Voltage({
                     </div>
                     <Handle style={{
                         marginLeft: '-10px'
-
-
-                    }} className="z-50 " type="source" position="bottom" />
-                    <Handle style={{
-                        marginLeft: '10px'
+                        , background: 'blue'
 
                     }} className="z-50 " type="target" position="bottom" />
+                    <Handle style={{
+                        marginLeft: '10px', background: 'red'
+
+                    }} className="z-50 " type="source" position="bottom" />
                     <Image preview={false} src={voltmeterBody} className="" />
                 </div>
             </div>

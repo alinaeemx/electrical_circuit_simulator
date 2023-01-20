@@ -83,6 +83,18 @@ export const nodes = [
         },
     },
     {
+        id: 'led2',
+        type: 'Led',
+        position: { x: 200, y: 10 },
+        data: {
+            name: 'led',
+            //   selects: {
+            //     'handle-0': 'smoothstep',
+            //     'handle-1': 'smoothstep',
+            //   },
+        },
+    },
+    {
         id: 'battery1',
         type: 'Battery',
         position: { x: 300, y: 200 },
@@ -122,6 +134,20 @@ export const nodes = [
     {
         id: 'switch1',
         type: 'SwitchKey',
+        position: { x: 520, y: 400 },
+        data: {
+            name: 'switch',
+            id: 1
+            //   selects: {
+            //     'handle-0': 'smoothstep',
+            //     'handle-1': 'smoothstep',
+            //   },
+        },
+    },
+
+    {
+        id: 'switch12',
+        type: 'SwitchKey',
         position: { x: 500, y: 400 },
         data: {
             name: 'switch',
@@ -132,6 +158,7 @@ export const nodes = [
             //   },
         },
     },
+    
     {
         id: 'switch2',
         type: 'SwitchDoubleKey',

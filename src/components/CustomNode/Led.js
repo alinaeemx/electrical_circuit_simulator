@@ -1,18 +1,38 @@
-  
-import   './style/led.css'
+
+import './style/led.css'
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
-import { select } from 'd3-selection'; 
- 
+import { select } from 'd3-selection';
+
 import styles from './style/style.module.css';
 import switchCueArrow from "../../assets/images/switchCueArrow.png";
 import { Image } from 'antd';
- 
+
 function Led({
     id,
+    data
     // isConnectable
-}) { 
+}) {
+    const { onLed } = data
+    const [led, setLed] = useState('bulb1')
+    useEffect(() => {
+        let first = true
+        if (first) {
+            if (onLed === 'on') {
+                setLed('bulb')
+            }
+            else {
+                setLed('bulb1')
+            }
+        }
+        return () => {
+            first = false
+        }
+    }, [onLed])
+
+
+
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
@@ -40,7 +60,7 @@ function Led({
                     transform: `rotate(${rotation}deg)`,
                 }}
                 className={styles.node}
-            > 
+            >
                 <div
                     ref={rotateControlRef}
                     style={{
@@ -50,16 +70,16 @@ function Led({
                 >
                     <Image preview={false} src={switchCueArrow} />
                 </div>
-            <div className=" w-44 flex items-center justify-center">
-                <Handle style={{ marginTop:20 ,marginRight:12 }} className="z-50 " type="source" position="right" />
-                <Handle style={{ marginTop:0 }} className=" z-50 " type="target" position="right" />
-                <div className="light rotate-90">
-                    <div className="bulb">
-                        <span></span>
-                        <span></span>
+                <div className=" w-44 flex items-center justify-center">
+                    <Handle style={{ marginTop: 20, marginRight: 12, background: 'blue' }} className="z-50 " type="target" position="right" />
+                    <Handle style={{ marginTop: 0, background: 'red' }} className=" z-50 " type="source" position="right" />
+                    <div className="light rotate-90">
+                        <div className={led}>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
-            </div> 
             </div>
         </>
     );

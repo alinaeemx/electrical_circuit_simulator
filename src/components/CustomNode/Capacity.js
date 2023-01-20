@@ -1,23 +1,57 @@
 import { Image } from "antd";
-import capacitance from "../../assets/images/capacitance.png";
+// import capacitance from "../../assets/images/capacitance.png";
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
-import { select } from 'd3-selection'; 
- 
+import { select } from 'd3-selection';
+
 import styles from './style/style.module.css';
 import switchCueArrow from "../../assets/images/switchCueArrow.png";
+import capacity0 from "../../assets/images/capacity/0.png";
+import capacity1 from "../../assets/images/capacity/1.png";
+import capacity2 from "../../assets/images/capacity/2.png";
+import capacity3 from "../../assets/images/capacity/3.png";
+import capacity4 from "../../assets/images/capacity/4.png";
+import capacity5 from "../../assets/images/capacity/5.png";
+import capacity6 from "../../assets/images/capacity/6.png";
+import capacity7 from "../../assets/images/capacity/7.png";
+import capacity8 from "../../assets/images/capacity/8.png";
+import capacity9 from "../../assets/images/capacity/9.png";
+import capacity10 from "../../assets/images/capacity/10.png";
+const capacitance = {
+    capacity0,
+    capacity1,
+    capacity2,
+    capacity3,
+    capacity4,
+    capacity5,
+    capacity6,
+    capacity7,
+    capacity8,
+    capacity9,
+    capacity10,
 
+}
 function Capacity({
     id,
     // isConnectable
+    data
 }) {
+    const [capacity, setCapacity] = useState(capacitance.capacity0)
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
+    const { num } = data
+    console.log(num);
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
+        }
+        if (num) {
+            setCapacity(capacitance[`capacity${num}`])
+
+        } else {
+            setCapacity(capacitance.capacity0)
         }
 
         const selection = select(rotateControlRef.current);
@@ -31,7 +65,7 @@ function Capacity({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals]);
+    }, [id, num, updateNodeInternals]);
 
     return (
         <>
@@ -41,7 +75,7 @@ function Capacity({
                 }}
                 className={styles.node}
             >
-                
+
                 <div
                     ref={rotateControlRef}
                     style={{
@@ -52,12 +86,32 @@ function Capacity({
                     <Image preview={false} src={switchCueArrow} />
                 </div>
                 <div
-                    style={{ width: "126px" }}
+                    style={{ width: "196px" }}
                     className=" flex items-center justify-center "
                 >
-                    <Handle className="mr-2 z-50 " type="target" position="bottom" />
-                    <Handle className="mr-2 z-50 " type="source" position="top" />
-                    <Image preview={false} src={capacitance} className="" />
+                    {/* <div
+                     style={{ width: "132px" ,height: "86px" }}
+                    className="absolute z-50">
+
+                        <div>
+                            + + + + + + + + + + + + + + + +
+                        </div>
+
+                        <div>
+                            - - - - - - - - - - - - - - - - - - - - - - -
+                        </div>
+
+                    </div> */}
+                    <Handle
+                        style={{
+                            background: 'red'
+                        }}
+                        className="mr-2 z-50 " type="source" position="top" />
+                    <Handle style={{
+                        background: 'blue'
+                    }}
+                        className="mr-2 z-50 " type="target" position="bottom" />
+                    <Image preview={false} src={capacity} className="" />
                 </div>
             </div>
 
