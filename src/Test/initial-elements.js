@@ -172,6 +172,18 @@ export const nodes = [
             //   },
         },
     },
+    {
+        id: 'gelva1',
+        type: 'Galvanometer',
+        position: { x: 600, y: 200 },
+        data: {
+            name: 'galvanometer',
+            //   selects: {
+            //     'handle-0': 'smoothstep',
+            //     'handle-1': 'smoothstep',
+            //   },
+        },
+    },
     //   {
     //     id: '5',
     //     type: 'output',

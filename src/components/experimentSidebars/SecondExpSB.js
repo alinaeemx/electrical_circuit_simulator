@@ -1,5 +1,5 @@
 import React from 'react';
-import { CapacitorIco, DCSourceIco, DSwitchIco, LampIco } from '../../assets/svgIcons';
+import { CapacitorIco, DCSourceIco, DSwitchIco, GalvanometerIco, LampIco } from '../../assets/svgIcons';
 
 export const SecondExpSB = () => {
     let sidebarElement = 'w-14 h-14 rounded-lg border-2 border-gray-200 '
@@ -38,7 +38,7 @@ export const SecondExpSB = () => {
             <div draggable onDragStart={(event) => {
                 onDragStart(event, 'input')
             }} className={sidebarElement} >
-                <LampIco />
+                <GalvanometerIco />
             </div>
         </>
     )
