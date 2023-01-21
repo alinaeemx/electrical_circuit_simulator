@@ -20,6 +20,7 @@ import Led from '../components/CustomNode/Led'
 import SwitchKey from '../components/CustomNode/SwitchKey'
 import Capacity from '../components/CustomNode/Capacity'
 import Voltage from '../components/CustomNode/Voltage'
+import Galvanometer from '../components/CustomNode/Galvanometer'
 import SwitchDoubleKey from './../components/CustomNode/SwitchDoubleKey';
 import CustomConnectionLine from '../components/CustomNode/CustomConnectionLine';
 const nodeTypes = { 
@@ -28,7 +29,8 @@ const nodeTypes = {
   SwitchKey,
   Capacity,
   Voltage,
-  SwitchDoubleKey
+  SwitchDoubleKey,
+  Galvanometer
 };
 
 const minimapStyle = {
