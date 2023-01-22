@@ -7,6 +7,7 @@ import { LoadingSpin } from './components/UI/LoadingSpin';
 const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
 const Workspace  = lazy(() => import("./pages/Workspace"));
+const Workspace1  = lazy(() => import("./components/ExpNo1/workspace1"));
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
           path="/ex1"
           element={
             <Suspense fallback={<LoadingSpin />}>
-              <Workspace />
+              <Workspace1 />
             </Suspense>
           }
         />

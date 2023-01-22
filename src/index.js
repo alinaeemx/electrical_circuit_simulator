@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider, theme } from "antd";
 import { createRoot } from 'react-dom/client'; 
 import App from './App'; 
+import Workspace1 from './components/ExpNo1/workspace1';
 console.log(theme);
 const Index = () => { 
   return (
@@ -26,7 +27,7 @@ const Index = () => {
 
     >
       <BrowserRouter>
-        <App />
+        <Workspace1 />
       </BrowserRouter>
     </ConfigProvider>
   );
