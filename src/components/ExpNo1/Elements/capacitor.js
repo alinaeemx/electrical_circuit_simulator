@@ -41,8 +41,7 @@ function Capacitor({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { num } = data
-    console.log(num);
+    const { num } = data 
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;

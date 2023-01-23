@@ -5,7 +5,7 @@ import 'reactflow/dist/style.css';
 import {
     Controls,
     ReactFlow,
-    Background,
+    // Background,
     useEdgesState,
     useNodesState,
     ReactFlowProvider,
@@ -25,6 +25,7 @@ import Lamp from './Elements/lamp';
 import Galvanometer from './Elements/Galvanometer';
 import Resistor from './Elements/resistor';
 
+
 const nodeTypes = {
     DSwitch: DSwitch,
     Lamp: Lamp,
@@ -37,13 +38,27 @@ const edgeTypes = {
     wire: CustomEdge
 }
 
+let intervalID;
+function startInterval({ onHandled, time }) {
+    intervalID = setInterval(onHandled, time);
+}
+
+// Function to stop setInterval call
+function stopClearInterval() {
+    clearInterval(intervalID);
+}
+
 const Workspace1 = () => {
 
     const reactFlowWrapper = useRef(null);
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [nodes, setNodes, onNodesChange] = useNodesState(Object.assign(
+        [],
+        JSON.parse(sessionStorage.getItem('nodes'))) ?? []);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(Object.assign(
+        [],
+        JSON.parse(sessionStorage.getItem('edges'))) ?? []);
     const [lampId, setLampId] = useState(0);
-    const [chargingCircuit, setChargingCircuit] = useState(0);
+    const [chargingCircuit, setChargingCircuit] = useState(parseInt(sessionStorage.getItem('chargingCircuit') ?? 0));
     const lampsId = useRef([
         {
             id: 'lampId0',
@@ -126,6 +141,7 @@ const Workspace1 = () => {
     }
 
     const onDeleteNode = useCallback((e) => {
+        stopProcess()
         if (e[0].type == 'DSwitch') {
             setDSwitch(false)
             return
@@ -151,7 +167,7 @@ const Workspace1 = () => {
         } else if (e[0].type == 'Galvanometer') {
             setGalvanometer(false)
             return
-        }
+        } 
         return
     }, [lampId]);
     const onDragOver = useCallback((event) => {
@@ -159,10 +175,18 @@ const Workspace1 = () => {
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
+    const stopProcess = () => {
+        console.log('stop process');
+        setRun(false)  
+        stopClearInterval()
+        setOnLed('lampId')
+        TerminationFun()
+        setDirection(0)
+
+    }
     const onDrop = useCallback(
         (event) => {
             event.preventDefault();
-
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
             const type = event.dataTransfer.getData('data');
 
@@ -212,15 +236,126 @@ const Workspace1 = () => {
             "dsBottom_dcT",
         ]
         let incorrectLinks = edges.filter((edge) => {
-            if (!correctConnections.includes(edge.id)) {
-                document.getElementById(edge.id).style.stroke = 'red';
-                return edge.id
-            } else {
-                document.getElementById(edge.id).style.stroke = 'green';
-                return null
-            }
+            // if (!correctConnections.includes(edge.id)) {
+            //     document.getElementById(edge.id).style.stroke = 'red';
+            //     return edge.id
+            // } else {
+            //     document.getElementById(edge.id).style.stroke = 'green';
+            //     return null
+            // }
         })
         return incorrectLinks;
+    }
+    const [onLed, setOnLed] = useState('lampId')
+    const [capacity, setCapacity] = useState(0)
+    const [direction, setDirection] = useState(0)
+    var x = 0
+    useEffect(() => {
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node.id === onLed) {
+                    node.data = { ...node.data, onLed: 'on' }
+                } else {
+                    node.data = { ...node.data, onLed: 'off' }
+                }
+
+                if (node.id === 'capacitorId1') {
+                    node.data = { ...node.data, num: capacity }
+                }
+                if (node.id === 'switchId1') {
+
+                    node.data = {
+                        ...node.data, onRunningOpenKey1, onRunningOpenKey2
+                    }
+                }
+                if (node.id === 'galvanometerId1') {
+
+                    node.data = {
+                        ...node.data, direction,
+                    }
+                }
+                return node;
+            })
+        );
+    }, [capacity, onLed, setNodes, Run]);
+
+    const onRunningOpenKey1 = () => {
+        stopClearInterval()
+        TerminationFun()
+        if (Run) {
+            sessionStorage.setItem("edges", JSON.stringify(edges));
+            sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            sessionStorage.setItem("chargingCircuit", chargingCircuit);
+            let body = document.querySelector('.bodyX');
+            let open = body.classList.toggle('on');
+            if (!open) { open = body.classList.toggle('on'); }
+
+            var x = 0
+            startInterval({
+                onHandled: () => {
+                    x++
+                    if (x === 10) {
+                        stopClearInterval()
+                        setOnLed('lampId')
+                        TerminationFun()
+                        setDirection(0)
+                    }
+                    setCapacity(x)
+
+                },
+                time: 1000,
+            })
+
+            setOnLed('lampId1')
+            TerminationFun1()
+            setDirection(1)
+        } else {
+            stopClearInterval()
+            setOnLed('lampId')
+            TerminationFun()
+            setDirection(0)
+
+        }
+    }
+
+    const onRunningOpenKey2 = () => {
+        stopClearInterval()
+        TerminationFun()
+        if (Run) {
+            sessionStorage.setItem("edges", JSON.stringify(edges));
+            sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            let body = document.querySelector('.bodyX');
+            let open = body.classList.toggle('on');
+            if (!open) { open = body.classList.toggle('on'); }
+
+            x = capacity
+            startInterval({
+                onHandled: () => {
+                    x--
+                    if (x === 0) {
+                        stopClearInterval()
+                        setOnLed('lampId')
+                        TerminationFun()
+                        setDirection(0)
+
+                    }
+
+                    setCapacity(x)
+                    // setOnLed('lampId0') 
+                },
+                time: 1000,
+            })
+
+            setOnLed('lampId0')
+            TerminationFun2()
+            setDirection(-1)
+        } else {
+            stopClearInterval()
+            setOnLed('lampId')
+            TerminationFun()
+            setDirection(0)
+
+        }
     }
 
     const RunFunc = useCallback(() => {
@@ -228,22 +363,19 @@ const Workspace1 = () => {
             if (edges.length == 8) {
                 let status = checkConnections(edges).length > 0 ? false : true;
                 if (status == true) {
+                    setRun(true)
                     message.success('Correct')
-                    let animatedEdges = edges.map((edge) => {
-                        if (dischargingCircuitsPossibility[chargingCircuit == 1 ? 0 : 0].includes(edge.id)) {
-                            edge.animated = true
-                        }
-                        return edge
-                    })
-                    setEdges(animatedEdges)
                 } else {
+                    setRun(false)
                     message.error('fail')
                 }
             } else {
+                setRun(false)
                 console.log("Not Ready2")
                 console.log("terminate2")
             }
         } else {
+            setRun(false)
             console.log("Not Ready1")
             console.log("terminate1")
         }
@@ -251,7 +383,79 @@ const Workspace1 = () => {
 
     const TerminationFun = useCallback(() => {
         let animatedEdges = edges.map((edge) => {
+
+            edge.type = 'smoothstep'
             edge.animated = false
+            edge.style = {
+                strokeWidth: 1,
+                stroke: 'black',
+            }
+            return edge
+        })
+        setEdges(animatedEdges)
+    }, [edges, nodes])
+    const TerminationFun1 = useCallback(() => {
+
+        // let animatedEdges = edges.map((edge) => {
+
+        //     edge.type = 'smoothstep'
+        //     edge.animated = true
+        //     edge.style = {
+        //         strokeWidth: 3,
+        //         stroke: '#ff53df',
+        //     }
+        //     return edge
+        // })
+        // setEdges(animatedEdges)
+
+        let animatedEdges = edges.map((edge) => {
+            if (chargingCircuitsPossibility[chargingCircuit].includes(edge.id)) {
+                edge.type = 'smoothstep'
+                edge.animated = true
+                edge.style = {
+                    strokeWidth: 2,
+                    stroke: '#FF0072',
+                }
+            }
+            // edge.type = 'smoothstep'
+            // edge.animated = true
+            // edge.style = {
+            //     strokeWidth: 2,
+            //     stroke: '#FF0072',
+            // }
+            return edge
+        })
+        setEdges(animatedEdges)
+    }, [edges, nodes])
+    const TerminationFun2 = useCallback(() => {
+
+        // let animatedEdges = edges.map((edge) => {
+
+        //     edge.type = 'smoothstep'
+        //     edge.animated = true
+        //     edge.style = {
+        //         strokeWidth: 3,
+        //         stroke: '#ff53df',
+        //     }
+        //     return edge
+        // })
+        // setEdges(animatedEdges)
+
+        let animatedEdges = edges.map((edge) => {
+            if (dischargingCircuitsPossibility[chargingCircuit].includes(edge.id)) {
+                edge.type = 'smoothstep'
+                edge.animated = true
+                edge.style = {
+                    strokeWidth: 2,
+                    stroke: '#FF0072',
+                }
+            }
+            // edge.type = 'smoothstep'
+            // edge.animated = true
+            // edge.style = {
+            //     strokeWidth: 2,
+            //     stroke: '#FF0072',
+            // }
             return edge
         })
         setEdges(animatedEdges)
@@ -273,6 +477,7 @@ const Workspace1 = () => {
             </aside>
             <div className=' w-screen h-screen m-0 p-0' ref={reactFlowWrapper} >
                 <ReactFlow
+                    className='bodyX'
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
                     onInit={setReactFlowInstance}

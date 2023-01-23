@@ -14,7 +14,7 @@ function Lamp({
     // isConnectable
 }) {
     const { onLed } = data
-    const [led, setLed] = useState('bulb1')
+    const [led, setLed] = useState('bulb1') 
     useEffect(() => {
         let first = true
         if (first) {

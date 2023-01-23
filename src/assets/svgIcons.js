@@ -41,7 +41,15 @@ export const LampIco = (props) => (
     </svg>
 )
 
-export const GalvanometerIco = (props) => {
+
+export const GalvanometerIco = ({ direction }) => {
+    console.log(direction);
+    const Middle = () => (<line x1={'50%'} y1={'35%'} x2={'50%'} y2={'50%'} style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" />)
+
+    const Right = () => (<line x1="65%" y1="44%" x2="38%" y2="60%" marker-start="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" ></line>)
+
+    const Left = () => (<line x1="35%" y1="44%" x2="62%" y2="60%" marker-start="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" ></line>)
+
     return (
         <svg style={{ height: '100%', width: '100%' }} >
             <defs>
@@ -53,7 +61,11 @@ export const GalvanometerIco = (props) => {
             //x1 + 5 , y1+3 for rotate right
             //x1 - 5 , y1+3 for rotate left
             <circle cx={'50%'} cy={'50%'} r={'40%'} fill="white" />
-            <line x1={'50%'} y1={'35%'} x2={'50%'} y2={'50%'} style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" />
+
+            {direction === 0 && <Middle />}
+            {direction === 1 && <Right />}
+            {direction === -1 && <Left />}
+
             <circle cx={'50%'} cy={'53%'} r={3} fill="#cfd8dc" strokeWidth={1.7} stroke="#263238" />
         </svg>
     )

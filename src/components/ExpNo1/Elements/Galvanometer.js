@@ -14,11 +14,13 @@ import { GalvanometerIco } from "../../../assets/svgIcons";
 function Galvanometer({
     id,
     // isConnectable
+    data
 }) {
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    useEffect(() => {
+    const { direction } = data 
+     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
         }
@@ -34,7 +36,7 @@ function Galvanometer({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals]);
+    }, [id, updateNodeInternals, direction]);
 
     return (
         <>
@@ -62,7 +64,7 @@ function Galvanometer({
                     style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20  " >
-                    <GalvanometerIco />
+                    <GalvanometerIco direction={direction ?? 0} />
                     <img
                         src={galvanometerImg}
                         alt="Overlay Image"

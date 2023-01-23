@@ -4,15 +4,18 @@ import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
 import styles from '../../CustomNode/style/style.module.css';
-import { Image } from 'antd';
+import { Image, message } from 'antd';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import openKey1 from "../../../assets/images/openKey1.png";
 import openKey2 from "../../../assets/images/openKey2.png";
+import { ExpSB1store } from '../../../store';
 function DSwitch({
     id,
-    isConnectable
+    isConnectable,
+    data
 }) {
-
+    const { Run } = ExpSB1store();
+    const { onRunningOpenKey1, onRunningOpenKey2 } = data
     const [keyOpenClose, setKeyOpenClose] = useState(openKey2);
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
@@ -21,7 +24,6 @@ function DSwitch({
         if (!rotateControlRef.current) {
             return;
         }
-
         const selection = select(rotateControlRef.current);
         const dragHandler = drag().on('drag', (evt) => {
             const dx = evt.x - 100;
@@ -33,7 +35,7 @@ function DSwitch({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals]);
+    }, [id, updateNodeInternals, onRunningOpenKey1, onRunningOpenKey2]);
 
     return (
         <>
@@ -57,11 +59,18 @@ function DSwitch({
                     style={{ width: "50px" }}
                     className=" flex items-center justify-center switchKey "
                     onClick={() => {
-                        if (keyOpenClose === openKey1) {
-                            setKeyOpenClose(openKey2);
+                        if (Run) {
+                            if (keyOpenClose === openKey1) {
+                                setKeyOpenClose(openKey2);
+                                onRunningOpenKey2()
+                            } else {
+                                setKeyOpenClose(openKey1);
+                                onRunningOpenKey1()
+                            }
                         } else {
-                            setKeyOpenClose(openKey1);
+                            message.warning('يجب تشغيل الدائرة اولا')
                         }
+
 
                     }}
 

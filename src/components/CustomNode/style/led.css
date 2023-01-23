@@ -14,7 +14,7 @@
    background: #222;
    } */
  .bodyX.on {
-     background: radial-gradient(rgb(157, 220, 247), rgb(95, 181, 224));
+     /* background: radial-gradient(rgb(157, 220, 247), rgb(95, 181, 224)); */
  }
 
  .bulb {
@@ -36,14 +36,14 @@
 }
 
  .bodyX.on .bulb {
-     background: #fff;
-     box-shadow: 0 0 50px #fff,
-         0 0 100px #fff,
-         0 0 150px #fff,
-         0 0 280px #fff,
-         0 0 250px #fff,
-         0 0 300px #fff,
-         0 0 350px #fff;
+     background: rgb(250, 237, 206);
+     box-shadow: 0 0 50px rgb(250, 237, 206),
+         0 0 100px rgb(250, 237, 206),
+         0 0 150px rgb(250, 237, 206),
+         0 0 280px rgb(250, 237, 206),
+         0 0 250px rgb(250, 237, 206),
+         0 0 300px rgb(250, 237, 206),
+         0 0 350px rgb(250, 237, 206);
  }
 
  .bulb::before {
@@ -71,7 +71,7 @@
 }
 
  .bodyX.on .bulb::before {
-     background: #fff;
+     background: rgb(250, 237, 206);
  }
 
  .bodyX.on .bulb::after {
@@ -82,7 +82,7 @@
      transform: translate(-50%, -50%);
      width: 120px;
      height: 120px;
-     background: #fff;
+     background: rgb(250, 237, 206);
      border-radius: 50%;
      filter: blur(40px);
  }
@@ -113,7 +113,7 @@
 }
 
  .bodyX.on .bulb span:nth-child(1) {
-     box-shadow: 20px 20px 0 10px #fff;
+     box-shadow: 20px 20px 0 10px rgb(250, 237, 206);
  }
 
  .bulb span:nth-child(2) {
@@ -142,7 +142,7 @@
 }
 
  .bodyX.on .bulb span:nth-child(2) {
-     box-shadow: -20px 20px 0 10px #fff;
+     box-shadow: -20px 20px 0 10px rgb(250, 237, 206);
  }
 
   
