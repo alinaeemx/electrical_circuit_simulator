@@ -167,7 +167,7 @@ const Workspace1 = () => {
         } else if (e[0].type == 'Galvanometer') {
             setGalvanometer(false)
             return
-        } 
+        }
         return
     }, [lampId]);
     const onDragOver = useCallback((event) => {
@@ -177,7 +177,7 @@ const Workspace1 = () => {
 
     const stopProcess = () => {
         console.log('stop process');
-        setRun(false)  
+        setRun(false)
         stopClearInterval()
         setOnLed('lampId')
         TerminationFun()
@@ -324,6 +324,7 @@ const Workspace1 = () => {
         if (Run) {
             sessionStorage.setItem("edges", JSON.stringify(edges));
             sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            sessionStorage.setItem("chargingCircuit", chargingCircuit); 
             let body = document.querySelector('.bodyX');
             let open = body.classList.toggle('on');
             if (!open) { open = body.classList.toggle('on'); }
