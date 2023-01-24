@@ -38,4 +38,6 @@ body {
     background-color: #7f66d6;
   }
 }
- 
+.borderColor:hover {
+  border-color: #7f66d6;
+}

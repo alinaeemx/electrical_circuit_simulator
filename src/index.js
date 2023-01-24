@@ -3,11 +3,9 @@ import './index.css';
 import arEG from "antd/lib/locale/ar_EG";
 import "animate.css"; 
 import { BrowserRouter } from "react-router-dom";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider } from "antd";
 import { createRoot } from 'react-dom/client'; 
-import App from './App'; 
-import Workspace1 from './components/ExpNo1/workspace1';
-console.log(theme);
+import App from './App';  
 const Index = () => { 
   return (
     <ConfigProvider
@@ -27,7 +25,7 @@ const Index = () => {
 
     >
       <BrowserRouter>
-        <Workspace1 />
+        <App />
       </BrowserRouter>
     </ConfigProvider>
   );

@@ -70,10 +70,10 @@ function Led({
                 >
                     <Image preview={false} src={switchCueArrow} />
                 </div>
-                <div className=" w-44 flex items-center justify-center">
+                <div className=" w-44 flex items-center justify-center ">
                     <Handle style={{ marginTop: 20, marginRight: 12, background: 'blue' }} className="z-50 " type="target" position="right" />
                     <Handle style={{ marginTop: 0, background: 'red' }} className=" z-50 " type="source" position="right" />
-                    <div className="light rotate-90">
+                    <div className="light rotate-90 scale-150">
                         <div className={led}>
                             <span></span>
                             <span></span>

@@ -4,10 +4,10 @@ import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./components/routes/privateRoute";
 
 import { LoadingSpin } from './components/UI/LoadingSpin';
+const QuizPage = lazy(() => import('./pages/QuizPage'));
 const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
-const Workspace  = lazy(() => import("./pages/Workspace"));
-const Workspace1  = lazy(() => import("./components/ExpNo1/workspace1"));
+const Workspace1 = lazy(() => import("./components/ExpNo1/workspace1"));
 
 function App() {
   return (
@@ -21,6 +21,14 @@ function App() {
         }
       />
 
+      <Route
+        path="/ex1"
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <Workspace1 />
+          </Suspense>
+        }
+      />
       <Route element={<PrivateRoute />}>
         <Route
           path=""
@@ -31,22 +39,15 @@ function App() {
           }
         />
 
+
         <Route
-          path="/ex1"
+          path="/quiz"
           element={
             <Suspense fallback={<LoadingSpin />}>
-              <Workspace1 />
+              <QuizPage />
             </Suspense>
           }
         />
-        {/* <Route
-          path="/ex2"
-          element={
-            <Suspense fallback={<LoadingSpin />}> 
-              <Workspace SideBar={Sidebar2} />
-            </Suspense>
-          }
-        /> */}
 
       </Route>
 

@@ -14,7 +14,7 @@ function Lamp({
     // isConnectable
 }) {
     const { onLed } = data
-    const [led, setLed] = useState('bulb1') 
+    const [led, setLed] = useState('bulb1')
     useEffect(() => {
         let first = true
         if (first) {
@@ -64,15 +64,19 @@ function Lamp({
                     ref={rotateControlRef}
                     style={{
                         display: 'block',
+                        marginTop: 30
                     }}
                     className={`nodrag ${styles.rotateHandle}`}
+
                 >
                     <Image preview={false} src={switchCueArrow} />
                 </div>
                 <div className=" w-44 flex items-center justify-center">
-                    <Handle id="lT" style={{ marginTop: -15, marginRight: 25, background: 'blue' }} className="z-50 " type="target" position="right" />
-                    <Handle id="lS" style={{ marginTop: 0, background: 'red' }} className=" z-50 " type="source" position="right" />
-                    <div className="light rotate-90">
+                    <Handle id="lT" style={{
+                        marginTop: -10, marginRight: 53, background: 'blue'
+                    }} className="z-50 " type="target" position="right" />
+                    <Handle id="lS" style={{ marginTop: 0, marginRight: 44, background: 'red' }} className=" z-50 " type="source" position="right" />
+                    <div className="light rotate-90 scale-50">
                         <div className={led}>
                             <span></span>
                             <span></span>

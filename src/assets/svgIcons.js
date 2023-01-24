@@ -6,7 +6,7 @@ export const DSwitchIco = (props) => (
         <circle cx={'70%'} cy={'75%'} r={2} fill="black" />
         <circle cx={'70%'} cy={'25%'} r={2} fill="black" />
         <line x1={0} y1={'50%'} x2={'30%'} y2={'50%'} style={{ stroke: 'black', strokeWidth: 1 }} />
-        <line x1={'30%'} y1={'50%'} x2={'70%'} y2={props.switchState == 2 ? '75%' : '25%'} style={{ stroke: 'black', strokeWidth: 1 }} />
+        <line x1={'30%'} y1={'50%'} x2={'70%'} y2={props.switchState === 2 ? '75%' : '25%'} style={{ stroke: 'black', strokeWidth: 1 }} />
         <line x1={'70%'} y1={'25%'} x2={'100%'} y2={'25%'} style={{ stroke: 'black', strokeWidth: 1 }} />
         <line x1={'70%'} y1={'75%'} x2={'100%'} y2={'75%'} style={{ stroke: 'black', strokeWidth: 1 }} />
     </svg>

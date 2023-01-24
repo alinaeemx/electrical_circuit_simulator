@@ -2,6 +2,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import 'reactflow/dist/style.css';
+import { BsFillStopFill } from 'react-icons/bs'
+import { VscDebugStart } from 'react-icons/vsc'
 import {
     Controls,
     ReactFlow,
@@ -10,13 +12,12 @@ import {
     useNodesState,
     ReactFlowProvider,
     addEdge,
-    Panel,
+    updateEdge,
 } from 'reactflow';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { ExpSB1 } from './sidebar1';
 import { ExpSB1store } from '../../store/index';
-import play from '../../assets/play.png'
-import stop from '../../assets/stop.png'
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import { CustomEdge } from './Elements/wire';
 import Capacitor from './Elements/capacitor';
 import DCSource from './Elements/DCSource';
@@ -24,7 +25,9 @@ import DSwitch from './Elements/dSwitch';
 import Lamp from './Elements/lamp';
 import Galvanometer from './Elements/Galvanometer';
 import Resistor from './Elements/resistor';
-
+import { AvatarLogo } from '../layout/AvatarLogo';
+import { useNavigate } from 'react-router-dom';
+import CustomConnectionLine from './../CustomNode/CustomConnectionLine';
 
 const nodeTypes = {
     DSwitch: DSwitch,
@@ -324,7 +327,7 @@ const Workspace1 = () => {
         if (Run) {
             sessionStorage.setItem("edges", JSON.stringify(edges));
             sessionStorage.setItem("nodes", JSON.stringify(nodes));
-            sessionStorage.setItem("chargingCircuit", chargingCircuit); 
+            sessionStorage.setItem("chargingCircuit", chargingCircuit);
             let body = document.querySelector('.bodyX');
             let open = body.classList.toggle('on');
             if (!open) { open = body.classList.toggle('on'); }
@@ -332,7 +335,7 @@ const Workspace1 = () => {
             x = capacity
             startInterval({
                 onHandled: () => {
-                    x--
+                    if (x > 0) x--; else x = 0
                     if (x === 0) {
                         stopClearInterval()
                         setOnLed('lampId')
@@ -462,20 +465,87 @@ const Workspace1 = () => {
         setEdges(animatedEdges)
     }, [edges, nodes])
 
-    useEffect(() => {
-        let isRendered = true;
-        if (isRendered) {
-            if (document.getElementsByTagName('a').length > 0) {
-                document.getElementsByTagName('a')[0].style.display = 'none'
-            }
+    // useEffect(() => {
+    //     let isRendered = true;
+    //     if (isRendered) {
+    //         if (document.getElementsByTagName('a').length > 0) {
+    //             document.getElementsByTagName('a')[0].style.display = 'none'
+    //         }
+    //     }
+    //     return () => (isRendered = false)
+    // })
+
+    const navigate = useNavigate();
+    const connectionLineStyle = {
+        strokeWidth: 1,
+        stroke: 'black',
+        type: 'smoothstep',
+    };
+    const edgeUpdateSuccessful = useRef(true);
+    const onEdgeUpdateStart = useCallback(() => {
+        edgeUpdateSuccessful.current = false;
+      }, []);
+    
+      const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
+        edgeUpdateSuccessful.current = true;
+        setEdges((els) => updateEdge(oldEdge, newConnection, els));
+      }, [setEdges]);
+    
+      const onEdgeUpdateEnd = useCallback((_, edge) => {
+        if (!edgeUpdateSuccessful.current) {
+          setEdges((eds) => eds.filter((e) => e.id !== edge.id));
         }
-        return () => (isRendered = false)
-    })
+    
+        edgeUpdateSuccessful.current = true;
+      }, [setEdges]);
     return (
         <ReactFlowProvider>
-            <aside style={{ width: '6vw' }} className='absolute top-32 bottom-32 right-4 bg-white shadow-xl border-gray-200 border-2 m-0 z-10 flex flex-col justify-around items-center overflow-x-hidden overflow-y-auto rounded-lg' >
+            <aside style={{ width: '64px' }} className='absolute top-32 bottom-32 right-4 bg-white shadow-xl border-gray-200 border-2 m-0 z-10 flex flex-col justify-around items-center overflow-x-hidden overflow-y-auto rounded-lg' >
                 <ExpSB1 />
             </aside>
+            <aside
+                dir='rtl'
+                style={{ height: '64px' }} className='absolute w-full bg-white shadow m-0 z-10 ' >
+                <div className='flex justify-between items-center gap-2 h-16'>
+                    <AvatarLogo />
+                    <div className='flex gap-2 '>
+                        <Button
+                            type='text'
+                            onClick={() => Run ? stopProcess() : RunFunc()}
+                        >{Run ? <div className='flex gap-1 justify-center items-center'>
+                            ايقاف
+                            <BsFillStopFill />
+                        </div> :
+                            <div className='flex gap-1 justify-center items-center'>
+                                تشغيل
+                                <VscDebugStart />
+                            </div>
+                            }
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                navigate('/quiz')
+                            }}
+                            type='text'
+                        >  الاسئلة</Button>
+                    </div>
+
+                    <Button
+                        onClick={() => {
+                            navigate('/')
+                        }}
+                        type='text'
+                    ><ArrowLeftOutlined style={{
+                        fontSize: 19
+                    }} /></Button>
+                </div>
+
+
+                {/* <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={stop} onClick={stopProcess} />
+                <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={play} onClick={RunFunc} /> */}
+
+            </aside>
+
             <div className=' w-screen h-screen m-0 p-0' ref={reactFlowWrapper} >
                 <ReactFlow
                     className='bodyX'
@@ -491,11 +561,13 @@ const Workspace1 = () => {
                     nodes={nodes}
                     edges={edges}
                     fitView
+                    connectionLineStyle={connectionLineStyle}
+                    onEdgeUpdate={onEdgeUpdate}
+                    onEdgeUpdateStart={onEdgeUpdateStart}
+                    onEdgeUpdateEnd={onEdgeUpdateEnd}
+                    connectionLineComponent={CustomConnectionLine}
                 >
-                    <Panel position='top-center' style={{ height: 40, width: 100, background: 'red', borderRadius: 10, color: 'white', padding: 10, display: 'flex', justifyContent: 'space-around', alignItems: 'center' }} >
-                        <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={stop} onClick={TerminationFun} />
-                        <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={play} onClick={RunFunc} />
-                    </Panel>
+
                     {/* <Background gap={7} /> */}
                     <Controls />
                 </ReactFlow>
