@@ -1,22 +1,27 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai';
-import { Mobile } from '../../UI/Responsive';
 import { AvatarLogo } from '../AvatarLogo';
 
 
-const { Header } = Layout;
-export const Navbar = ({ collapsed, setCollapsed }) => {
+
+export const Navbar = ({ collapsed, setCollapsed,headerTitle }) => {
+  const { Header } = Layout;
+  // const { Title } = Typography;
 
 
   return (
     <Header className="app-header shadow"
       style={{
         background: 'transparent',
-        paddingInline: 10
+        paddingInline: 10,
+        display:'flex',
+        justifyContent:'space-between',
+        alignItems:'center'
       }}
     > 
-        <AvatarLogo /> 
+        <AvatarLogo />
+        <div className='font-bold text-xl' >{headerTitle}</div> 
+        <div></div> 
     </Header>
   );
 };

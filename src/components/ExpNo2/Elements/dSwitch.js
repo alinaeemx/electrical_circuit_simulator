@@ -4,17 +4,17 @@ import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
 import styles from '../../CustomNode/style/style.module.css';
-import { Image, message } from 'antd';
+import { Image } from 'antd';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import openKey1 from "../../../assets/images/openKey1.png";
 import openKey2 from "../../../assets/images/openKey2.png";
-import { ExpSB1store } from '../../../store';
+import { ExpSB2store } from '../../../store';
 function DSwitch({
     id,
     isConnectable,
     data
 }) {
-    const { Run } = ExpSB1store();
+    const { Run, setRunError } = ExpSB2store();
     const { onRunningOpenKey1, onRunningOpenKey2 } = data
     const [keyOpenClose, setKeyOpenClose] = useState(openKey2);
     const rotateControlRef = useRef(null);
@@ -68,7 +68,7 @@ function DSwitch({
                                 onRunningOpenKey1()
                             }
                         } else {
-                            message.warning('يجب تشغيل الدائرة اولا')
+                            setRunError(true)
                         }
 
 

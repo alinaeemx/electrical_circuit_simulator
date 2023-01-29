@@ -13,7 +13,7 @@ export const GlobalStore = create((set) =>
     setOnSwitchKey: (onSwitchKey) => set({ onSwitchKey }),
 }))
 
-export const ExpSB1store = create((set) => ({
+export const ExpSB2store = create((set) => ({
     Capacitor: false,
     setCapacitor: (Capacitor) => set({ Capacitor }),
   
@@ -34,5 +34,10 @@ export const ExpSB1store = create((set) => ({
   
     Run: false,
     setRun: (Run) => set({ Run }),
+
+    RunError: false,
+    setRunError: (RunError) => set({ RunError }),
+
+    
   
   }));
