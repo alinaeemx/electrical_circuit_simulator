@@ -6,7 +6,14 @@ body {
   margin: 0;
 }
 
+@font-face {
+  font-family: 'Cairo';
+  src: local('Cairo'), url('./assets/fonts/Cairo.ttf') format('opentype');
+}
 
+* {
+  font-family: "Cairo" !important;
+}
 ::-webkit-scrollbar-thumb {
   background-color: transparent;
   border-radius: 100px;

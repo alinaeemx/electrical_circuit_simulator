@@ -36,7 +36,6 @@ function App() {
         path="/ex1"
         element={
           <Suspense fallback={<LoadingSpin />}>
-   //         <Workspace1 />
 
             <Workspace2 />
 
