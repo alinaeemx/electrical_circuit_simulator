@@ -15,7 +15,7 @@ const Index = () => {
 
       theme={{
         token: { 
-          colorPrimary: "#7f66d6",
+          colorPrimary: "#398AB9",
           // // colorTextBase: "#ffeeee",
           // colorBgHeader: "#7f66d6",
           // algorithm: theme.darkAlgorithm,

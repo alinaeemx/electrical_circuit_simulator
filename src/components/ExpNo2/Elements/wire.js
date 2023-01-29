@@ -2,7 +2,7 @@ import React from 'react';
 import { getSmoothStepPath } from 'reactflow';
 
 export const CustomEdge = (props) => {
-    console.log(props)
+    // console.log(props)
     const [edgePath] = getSmoothStepPath({
         sourceX: props.sourceX,
         sourceY: props.sourceY,

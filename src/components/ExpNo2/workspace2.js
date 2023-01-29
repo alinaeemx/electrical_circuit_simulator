@@ -2,22 +2,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import 'reactflow/dist/style.css';
-import { BsFillStopFill } from 'react-icons/bs'
-import { VscDebugStart } from 'react-icons/vsc'
+// import { BsFillStopFill, BsFillPlayFill } from 'react-icons/bs'
 import {
     Controls,
     ReactFlow,
-    // Background,
     useEdgesState,
     useNodesState,
     ReactFlowProvider,
     addEdge,
     updateEdge,
+    ControlButton,
 } from 'reactflow';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { ExpSB1 } from './sidebar1';
-import { ExpSB1store } from '../../store/index';
-import { Button, message } from 'antd';
+import { ExpSB2 } from './sidebar2';
+import { ExpSB2store } from '../../store/index';
+import { Button, message, Popconfirm } from 'antd';
+import { WarningOutlined } from '@ant-design/icons';
 import { CustomEdge } from './Elements/wire';
 import Capacitor from './Elements/capacitor';
 import DCSource from './Elements/DCSource';
@@ -27,7 +26,9 @@ import Galvanometer from './Elements/Galvanometer';
 import Resistor from './Elements/resistor';
 import { AvatarLogo } from '../layout/AvatarLogo';
 import { useNavigate } from 'react-router-dom';
-import CustomConnectionLine from './../CustomNode/CustomConnectionLine';
+import CustomConnectionLine from '../CustomNode/CustomConnectionLine';
+import playIco from '../../assets/play.png';
+import stopIco from '../../assets/stop.png';
 
 const nodeTypes = {
     DSwitch: DSwitch,
@@ -51,8 +52,19 @@ function stopClearInterval() {
     clearInterval(intervalID);
 }
 
-const Workspace1 = () => {
+const Workspace2 = () => {
 
+    const [messageApi, contextHolder] = message.useMessage();
+    const Message = ({ type, content }) => {
+        messageApi.open({
+            type: type,
+            content: content,
+            style: {
+                marginTop: '65px',
+                direction:'rtl'
+            },
+        });
+    };
     const reactFlowWrapper = useRef(null);
     const [nodes, setNodes, onNodesChange] = useNodesState(Object.assign(
         [],
@@ -105,7 +117,7 @@ const Workspace1 = () => {
         ]
     ]
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const { setDSwitch, setLamp, setDCSource, setCapacitor, setResistor, setGalvanometer, setRun, Run } = ExpSB1store();
+    const { setDSwitch, setLamp, setDCSource, setCapacitor, setResistor, setGalvanometer, setRun, Run, setRunError, RunError } = ExpSB2store();
 
     const getId = (type) => {
         if (type == 'DSwitch') {
@@ -179,7 +191,6 @@ const Workspace1 = () => {
     }, []);
 
     const stopProcess = () => {
-        console.log('stop process');
         setRun(false)
         stopClearInterval()
         setOnLed('lampId')
@@ -239,13 +250,11 @@ const Workspace1 = () => {
             "dsBottom_dcT",
         ]
         let incorrectLinks = edges.filter((edge) => {
-            // if (!correctConnections.includes(edge.id)) {
-            //     document.getElementById(edge.id).style.stroke = 'red';
-            //     return edge.id
-            // } else {
-            //     document.getElementById(edge.id).style.stroke = 'green';
-            //     return null
-            // }
+            if (!correctConnections.includes(edge.id)) {
+                document.getElementById(edge.id).style.stroke = 'red';
+                return edge.id
+            }
+            return null
         })
         return incorrectLinks;
     }
@@ -309,7 +318,7 @@ const Workspace1 = () => {
                 time: 1000,
             })
 
-            setOnLed('lampId1')
+            setOnLed(chargingCircuit == 0 ? 'lampId0' : 'lampId1')
             TerminationFun1()
             setDirection(1)
         } else {
@@ -350,7 +359,7 @@ const Workspace1 = () => {
                 time: 1000,
             })
 
-            setOnLed('lampId0')
+            setOnLed(chargingCircuit == 0 ? 'lampId1' : 'lampId0')
             TerminationFun2()
             setDirection(-1)
         } else {
@@ -361,27 +370,37 @@ const Workspace1 = () => {
 
         }
     }
-
+    
     const RunFunc = useCallback(() => {
         if (nodes.length == 7) {
             if (edges.length == 8) {
                 let status = checkConnections(edges).length > 0 ? false : true;
                 if (status == true) {
                     setRun(true)
-                    message.success('Correct')
+                    Message({
+                        content: 'الدائرة جاهزة لتنفيذ التجربة',
+                        type: 'success'
+                    })
                 } else {
+                    Message({
+                        content: 'يجب ربط الدائرة بصورة صحيحة',
+                        type: 'error'
+                    })
                     setRun(false)
-                    message.error('fail')
                 }
             } else {
+                Message({
+                    content: 'يجب اكمال ربط الدائرة',
+                    type: 'error'
+                })
                 setRun(false)
-                console.log("Not Ready2")
-                console.log("terminate2")
             }
         } else {
+            Message({
+                content: 'يجب استخدام جميع عناصر التجربة',
+                type: 'error'
+            })
             setRun(false)
-            console.log("Not Ready1")
-            console.log("terminate1")
         }
     }, [edges, nodes])
 
@@ -465,115 +484,111 @@ const Workspace1 = () => {
         setEdges(animatedEdges)
     }, [edges, nodes])
 
-    // useEffect(() => {
-    //     let isRendered = true;
-    //     if (isRendered) {
-    //         if (document.getElementsByTagName('a').length > 0) {
-    //             document.getElementsByTagName('a')[0].style.display = 'none'
-    //         }
-    //     }
-    //     return () => (isRendered = false)
-    // })
-
     const navigate = useNavigate();
+
     const connectionLineStyle = {
         strokeWidth: 1,
         stroke: 'black',
         type: 'smoothstep',
     };
     const edgeUpdateSuccessful = useRef(true);
+
     const onEdgeUpdateStart = useCallback(() => {
         edgeUpdateSuccessful.current = false;
-      }, []);
-    
-      const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
+    }, []);
+
+    const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
         edgeUpdateSuccessful.current = true;
         setEdges((els) => updateEdge(oldEdge, newConnection, els));
-      }, [setEdges]);
-    
-      const onEdgeUpdateEnd = useCallback((_, edge) => {
+    }, [setEdges]);
+
+    const onEdgeUpdateEnd = useCallback((_, edge) => {
         if (!edgeUpdateSuccessful.current) {
-          setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+            setEdges((eds) => eds.filter((e) => e.id !== edge.id));
         }
-    
+
         edgeUpdateSuccessful.current = true;
-      }, [setEdges]);
+    }, [setEdges]);
+
     return (
-        <ReactFlowProvider>
-            <aside style={{ width: '64px' }} className='absolute top-32 bottom-32 right-4 bg-white shadow-xl border-gray-200 border-2 m-0 z-10 flex flex-col justify-around items-center overflow-x-hidden overflow-y-auto rounded-lg' >
-                <ExpSB1 />
-            </aside>
-            <aside
-                dir='rtl'
-                style={{ height: '64px' }} className='absolute w-full bg-white shadow m-0 z-10 ' >
-                <div className='flex justify-between items-center gap-2 h-16'>
-                    <AvatarLogo />
-                    <div className='flex gap-2 '>
+        <>
+            {contextHolder}
+            <ReactFlowProvider>
+                <aside style={{ width: '64px' }} className='absolute top-32 bottom-32 right-4 bg-white shadow-xl border-gray-200 border-2 m-0 z-10 flex flex-col justify-around items-center overflow-x-hidden overflow-y-auto rounded-lg' >
+                    <ExpSB2 />
+                </aside>
+                <aside
+                    dir='rtl'
+                    style={{ height: '64px', paddingRight: '10px' }} className='absolute w-full shadow m-0 z-10  ' >
+                    <div className='flex justify-between items-center h-full '>
+                        <AvatarLogo />
+                        <div className='font-bold text-lg' >
+                            شحن و تفريغ المتسعة
+                        </div>
+
                         <Button
+                            className='font-semibold'
+                            onClick={() => navigate('/test2')}
                             type='text'
-                            onClick={() => Run ? stopProcess() : RunFunc()}
-                        >{Run ? <div className='flex gap-1 justify-center items-center'>
-                            ايقاف
-                            <BsFillStopFill />
-                        </div> :
-                            <div className='flex gap-1 justify-center items-center'>
-                                تشغيل
-                                <VscDebugStart />
-                            </div>
-                            }
+                            style={{ color: '#398AB9', height: '100%', borderRadius: 0 }}
+                        >
+                            إختبر نفسك !
                         </Button>
-                        <Button
-                            onClick={() => {
-                                navigate('/quiz')
-                            }}
-                            type='text'
-                        >  الاسئلة</Button>
                     </div>
-
-                    <Button
-                        onClick={() => {
-                            navigate('/')
-                        }}
-                        type='text'
-                    ><ArrowLeftOutlined style={{
-                        fontSize: 19
-                    }} /></Button>
+                </aside>
+                <div className=' w-screen h-screen m-0 p-0' ref={reactFlowWrapper} >
+                    <ReactFlow
+                        className='bodyX'
+                        style={{ background: '#F5F5F5' }}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                        onInit={setReactFlowInstance}
+                        onNodesDelete={onDeleteNode}
+                        onDragOver={onDragOver}
+                        nodeTypes={nodeTypes}
+                        edgeTypes={edgeTypes}
+                        onConnect={onConnect}
+                        onDrop={onDrop}
+                        nodes={nodes}
+                        edges={edges}
+                        fitView
+                        connectionLineStyle={connectionLineStyle}
+                        onEdgeUpdate={onEdgeUpdate}
+                        onEdgeUpdateStart={onEdgeUpdateStart}
+                        onEdgeUpdateEnd={onEdgeUpdateEnd}
+                        connectionLineComponent={CustomConnectionLine}
+                    >
+                        <Controls style={{ display: 'flex', flexDirection: 'column-reverse' }} >
+                            <Popconfirm
+                                title="يجب تشغيل الدائرة اولاً"
+                                okButtonProps={{ style: { display: 'none' } }}
+                                cancelButtonProps={{ style: { display: 'none' } }}
+                                open={RunError}
+                                placement='right'
+                                showCancel={false}
+                                icon={<WarningOutlined />}
+                            >
+                                <ControlButton onClick={() => {
+                                    if (RunError) {
+                                        setRunError(false)
+                                    }
+                                    Run ?
+                                        stopProcess()
+                                        : RunFunc()
+                                }} >
+                                    <>
+                                        {
+                                            Run ? (<img style={{ maxWidth: '10px' }} alt='' draggable='false' src={stopIco} />) : (<img style={{ maxWidth: '10px' }} alt='' draggable='false' src={playIco} />)
+                                        }
+                                    </>
+                                </ControlButton>
+                            </Popconfirm>
+                        </Controls>
+                    </ReactFlow>
                 </div>
-
-
-                {/* <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={stop} onClick={stopProcess} />
-                <img className='cursor-pointer' draggable={false} height={10} width={25} alt='' src={play} onClick={RunFunc} /> */}
-
-            </aside>
-
-            <div className=' w-screen h-screen m-0 p-0' ref={reactFlowWrapper} >
-                <ReactFlow
-                    className='bodyX'
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
-                    onInit={setReactFlowInstance}
-                    onNodesDelete={onDeleteNode}
-                    onDragOver={onDragOver}
-                    nodeTypes={nodeTypes}
-                    edgeTypes={edgeTypes}
-                    onConnect={onConnect}
-                    onDrop={onDrop}
-                    nodes={nodes}
-                    edges={edges}
-                    fitView
-                    connectionLineStyle={connectionLineStyle}
-                    onEdgeUpdate={onEdgeUpdate}
-                    onEdgeUpdateStart={onEdgeUpdateStart}
-                    onEdgeUpdateEnd={onEdgeUpdateEnd}
-                    connectionLineComponent={CustomConnectionLine}
-                >
-
-                    {/* <Background gap={7} /> */}
-                    <Controls />
-                </ReactFlow>
-            </div>
-        </ReactFlowProvider>
+            </ReactFlowProvider>
+        </>
     )
 }
 
-export default Workspace1;
+export default Workspace2;

@@ -43,12 +43,12 @@ export const LampIco = (props) => (
 
 
 export const GalvanometerIco = ({ direction }) => {
-    console.log(direction);
-    const Middle = () => (<line x1={'50%'} y1={'35%'} x2={'50%'} y2={'50%'} style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" />)
+    // console.log(direction);
+    const Middle = () => (<line x1={'50%'} y1={'35%'} x2={'50%'} y2={'50%'} markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} />)
 
-    const Right = () => (<line x1="65%" y1="44%" x2="38%" y2="60%" marker-start="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" ></line>)
+    const Right = () => (<line x1="65%" y1="44%" x2="38%" y2="60%" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
 
-    const Left = () => (<line x1="35%" y1="44%" x2="62%" y2="60%" marker-start="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} markerStart="url(#arrow)" ></line>)
+    const Left = () => (<line x1="35%" y1="44%" x2="62%" y2="60%" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
 
     return (
         <svg style={{ height: '100%', width: '100%' }} >
