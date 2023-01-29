@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./components/routes/privateRoute";
 
 import { LoadingSpin } from './components/UI/LoadingSpin';
+import About from "./pages/About";
 const QuizPage = lazy(() => import('./pages/QuizPage'));
 const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
@@ -20,7 +21,14 @@ function App() {
           </Suspense>
         }
       />
-
+      <Route
+        path=""
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <About />
+          </Suspense>
+        }
+      />
       <Route
         path="/ex1"
         element={
@@ -31,13 +39,14 @@ function App() {
       />
       <Route element={<PrivateRoute />}>
         <Route
-          path=""
+          path="/home"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <HomePage />
             </Suspense>
           }
         />
+
 
 
         <Route
