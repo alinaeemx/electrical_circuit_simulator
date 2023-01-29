@@ -2,21 +2,24 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./components/routes/privateRoute";
-
 import { LoadingSpin } from './components/UI/LoadingSpin';
+
 import About from "./pages/About";
 const QuizPage = lazy(() => import('./pages/QuizPage'));
+
 const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
-const Workspace1 = lazy(() => import("./components/ExpNo1/workspace1"));
+const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
+const TestPage2 = lazy(() => import("./components/ExpNo2/testPage2"));
 
 function App() {
   return (
     <Routes>
       <Route
-        path="/auth"
+        path="exp2"
         element={
           <Suspense fallback={<LoadingSpin />}>
+
             {/* <AuthenticationPage /> */}
           </Suspense>
         }
@@ -33,7 +36,10 @@ function App() {
         path="/ex1"
         element={
           <Suspense fallback={<LoadingSpin />}>
-            <Workspace1 />
+   //         <Workspace1 />
+
+            <Workspace2 />
+
           </Suspense>
         }
       />
@@ -48,12 +54,11 @@ function App() {
         />
 
 
-
         <Route
-          path="/quiz"
+          path="/test2"
           element={
             <Suspense fallback={<LoadingSpin />}>
-              <QuizPage />
+              <TestPage2 />
             </Suspense>
           }
         />

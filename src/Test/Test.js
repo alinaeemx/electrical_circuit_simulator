@@ -79,7 +79,7 @@ const OverviewFlow = () => {
       }
       // console.log('eds', eds);
       const x = addEdge(params, eds)
-      console.log('addEdge(params, eds)', x);
+      // console.log('addEdge(params, eds)', x);
       return x
     })
   }, []);
@@ -138,8 +138,8 @@ const OverviewFlow = () => {
       reualtList.forEach((item, index) => {
         let trueconect = edges.filter(it => it.source === item.source && it.target === item.target)
         let falseconect = edges.filter(it => it.source !== item.source && it.target !== item.target)
-        console.log('trueconect', trueconect);
-        console.log('falseconect', falseconect);
+        // console.log('trueconect', trueconect);
+        // console.log('falseconect', falseconect);
 
       })
 

@@ -5,10 +5,10 @@ import battery from '../../assets/images/battery.png';
 import dSwitch from '../../assets/images/openKey2.png';
 import galvanometerIco from '../../assets/images/galvanometer.png';
 import capacitor from '../../assets/images/capacity/0.png';
-import { ExpSB1store } from '../../store';
+import { ExpSB2store } from '../../store';
 
 
-export const ExpSB1 = () => {
+export const ExpSB2 = () => {
     // let sidebarElement = 'w-14 h-14 rounded-lg border-2 border-gray-200 '
     let sidebarElement = 'w-14 h-14 flex justify-center items-center  '
     const onDragStart = (event, nodeType) => {
@@ -16,7 +16,7 @@ export const ExpSB1 = () => {
         event.dataTransfer.effectAllowed = 'move';
     };
 
-    const { Capacitor, Resistor, Lamp, DSwitch, DCSource, Galvanometer } = ExpSB1store();
+    const { Capacitor, Resistor, Lamp, DSwitch, DCSource, Galvanometer } = ExpSB2store();
 
     return (
         <>

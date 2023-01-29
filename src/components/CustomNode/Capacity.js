@@ -42,7 +42,7 @@ function Capacity({
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
     const { num } = data
-    console.log(num);
+    // console.log(num);
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
