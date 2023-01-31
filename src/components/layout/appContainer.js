@@ -1,5 +1,5 @@
 import { TITLE_FOOTER } from "../../constants/constants";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Navbar } from './navbar/index';
 import Draggable from "react-draggable";
 import { Layout } from "antd";
@@ -11,7 +11,8 @@ export const AppContainer = ({ children }) => {
   const location = useLocation();
   const titles = {
     "/" : "التجارب",
-    "/test2":"شحن و تفريغ المتسعة"
+    "/test2":"الإختبار",
+    "/result2":"النتيجة"
   }
 
   return (

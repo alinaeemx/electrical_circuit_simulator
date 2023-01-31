@@ -11,6 +11,7 @@ const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
 const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
 const TestPage2 = lazy(() => import("./components/ExpNo2/testPage2"));
+const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
 
 function App() {
   return (
@@ -58,6 +59,15 @@ function App() {
           element={
             <Suspense fallback={<LoadingSpin />}>
               <TestPage2 />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="/result2"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <ResultPage2 />
             </Suspense>
           }
         />
