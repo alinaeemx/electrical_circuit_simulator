@@ -5,6 +5,7 @@ import { PrivateRoute } from "./components/routes/privateRoute";
 import { LoadingSpin } from './components/UI/LoadingSpin';
 const ErrorPage = lazy(() => import('./pages/errorPage'));
 const HomePage = lazy(() => import("./pages/Home"));
+const AboutPage = lazy(() => import("./pages/About"));
 const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
 const TestPage2 = lazy(() => import("./components/ExpNo2/testPage2"));
 const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
@@ -12,6 +13,14 @@ const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
 function App() {
   return (
     <Routes>
+      <Route
+        path=""
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <AboutPage />
+          </Suspense>
+        }
+      />
       <Route
         path="exp2"
         element={
@@ -22,16 +31,15 @@ function App() {
       />
       <Route element={<PrivateRoute />}>
         <Route
-          path=""
+          path="home"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <HomePage />
             </Suspense>
           }
         />
-
         <Route
-          path="/test2"
+          path="test2"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <TestPage2 />
@@ -40,7 +48,7 @@ function App() {
         />
 
         <Route
-          path="/result2"
+          path="result2"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <ResultPage2 />

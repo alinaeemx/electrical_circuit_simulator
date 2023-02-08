@@ -6,6 +6,14 @@ body {
   margin: 0;
 }
 
+@font-face {
+  font-family: 'Cairo';
+  src: local('Cairo'), url('./assets/fonts/NotoKufiArabic-Regular.ttf') format('opentype');
+}
+
+* {
+  font-family: "Cairo" !important;
+}
 
 ::-webkit-scrollbar-thumb {
   background-color: transparent;

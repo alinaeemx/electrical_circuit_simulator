@@ -7,7 +7,7 @@ import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
-import styles from '../../CustomNode/style/style.module.css';
+import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import { GalvanometerIco } from "../../../assets/svgIcons";
 

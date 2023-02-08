@@ -3,7 +3,7 @@ import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection'; 
  
-import styles from './style/style.module.css';
+import styles from '../../style/style.module.css';
 import { Image } from 'antd'; 
 import switchCueArrow from "../../assets/images/switchCueArrow.png";
 import openKey from "../../assets/images/openKey.png";

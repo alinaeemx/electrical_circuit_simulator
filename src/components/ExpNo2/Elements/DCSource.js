@@ -9,7 +9,7 @@ import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
-import styles from '../../CustomNode/style/style.module.css';
+import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 
 function DCSource({
@@ -62,11 +62,11 @@ function DCSource({
                     <Handle
                         id="dcT"
                         style={{ background: 'blue' }}
-                        className=" z-50 " type="target" position="bottom" />
+                        className=" z-50 " type="target" position="right" />
                     <Handle
                         id="dcS"
                         style={{ background: 'red' }}
-                        className=" z-50 " type="source" position="top" />
+                        className=" z-50 " type="source" position="left" />
                     <Image preview={false} src={battery} className="" />
                 </div>
             </div>

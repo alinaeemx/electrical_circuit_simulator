@@ -1,0 +1,26 @@
+.react-flow__controls button {
+    background-color: #F1F1F2;
+    width: 25px;
+    height: 25px;
+  }
+  
+  .react-flow__controls button:hover {
+    background-color: #E3E3E3;
+  }
+  
+  .react-flow__controls button:first-child {
+    border-radius: 0 0 4px 4px;
+  }
+  
+  .react-flow__controls button:last-child {
+    border-radius: 4px 4px 0 0;
+  }
+  
+  /* .react-flow__controls button path {
+    fill: var(--text-color);
+  } */
+  .react-flow__node.selectable:focus, .react-flow__node.selectable:focus-visible{
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+  }

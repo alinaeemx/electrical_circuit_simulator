@@ -10,13 +10,14 @@ export const Navbar = ({ collapsed, setCollapsed,headerTitle }) => {
 
 
   return (
-    <Header className="app-header shadow"
+    <Header className="app-header shadow "
       style={{
-        background: 'transparent',
+        background: '#F1F1F2',
         paddingInline: 10,
         display:'flex',
         justifyContent:'space-between',
-        alignItems:'center'
+        alignItems:'center',
+        borderBottomWidth:'1px'
       }}
     > 
         <AvatarLogo />

@@ -9,7 +9,7 @@ import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
-import styles from '../../CustomNode/style/style.module.css';
+import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 
 function Resistor({
@@ -56,7 +56,7 @@ function Resistor({
                     <Image preview={false} src={switchCueArrow} />
                 </div>
                 <div
-                    style={{ width: "50px" }}
+                    style={{ width: "70px" }}
                     className=" flex items-center justify-center "
                 >
                     <Handle

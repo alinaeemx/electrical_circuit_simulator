@@ -67,7 +67,7 @@ const ResultPage2 = () => {
 
     useEffect(() => {
         setResult(JSON.parse(localStorage.getItem('result2')));
-    }, [result])
+    }, [])
     return (
         <>
             <div>
@@ -78,7 +78,7 @@ const ResultPage2 = () => {
                                 className='animate__animated animate__slideInUp'
                                 key={i}
                                 style={{ background: '#398AB9', paddingTop: 6, paddingRight: 6, borderRadius: 12, marginTop: 20 }}>
-                                <Card style={{ width: '80vw' }} bordered={false} title={
+                                <Card style={{ width: '80vw', background:"#F1F1F2" }} bordered={false} title={
                                     <div >
                                         <span className='ml-3' >السؤال {i + 1}</span>
                                         {
@@ -110,15 +110,15 @@ const ResultPage2 = () => {
                     })
                 }
             </div>
-            <div className=' absolute left-0 right-0 bottom-16 ' >
+            <div className=' absolute left-0 right-0 bottom-10 ' >
                 <Button
                     size='large'
-                    type='default'
+                    type='primary'
                     shape='circle'
                     className='text-white animate__animated animate__slideInLeft '
                     style={{
                         position: 'sticky',
-                        backgroundColor: '#398AB9',
+                        backgroundColor: 'rgba(139,61,255,0.8)',
                         bottom: 0,
                         right: '95vw',
                         display: 'flex',
@@ -128,7 +128,7 @@ const ResultPage2 = () => {
                     icon={<HomeOutlined />}
                     onClick={() => {
                         localStorage.removeItem('result2')
-                        navigate("/")
+                        navigate("/home")
                     }}
                 />
             </div>

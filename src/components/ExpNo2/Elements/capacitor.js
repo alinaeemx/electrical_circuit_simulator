@@ -5,7 +5,7 @@ import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
-import styles from '../../CustomNode/style/style.module.css';
+import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import capacity0 from "../../../assets/images/capacity/0.png";
 import capacity1 from "../../../assets/images/capacity/1.png";
@@ -91,12 +91,12 @@ function Capacitor({
                     <Handle
                         id='cS'
                         style={{ background: 'red' }}
-                        className="mr-2 z-50 " type="source" position="top" />
+                        className="mr-1 z-50 " type="source" position="right" />
                     <Handle
                         id="cT"
                         style={{ background: 'blue' }}
-                        className="mr-2 z-50 " type="target" position="bottom" />
-                    <Image preview={false} src={capacity} className="" />
+                        className="ml-1 z-50 " type="target" position="left" />
+                    <Image preview={false} src={capacity} className="z-50 " />
                 </div>
             </div>
 

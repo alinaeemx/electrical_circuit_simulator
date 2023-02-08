@@ -43,7 +43,7 @@ export const LampIco = (props) => (
 
 
 export const GalvanometerIco = ({ direction }) => {
-    // console.log(direction);
+    
     const Middle = () => (<line x1={'50%'} y1={'35%'} x2={'50%'} y2={'50%'} markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} />)
 
     const Right = () => (<line x1="65%" y1="44%" x2="38%" y2="60%" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
@@ -60,7 +60,7 @@ export const GalvanometerIco = ({ direction }) => {
             </defs>
             //x1 + 5 , y1+3 for rotate right
             //x1 - 5 , y1+3 for rotate left
-            <circle cx={'50%'} cy={'50%'} r={'40%'} fill="white" />
+            <circle cx={'50%'} cy={'50%'} r={'40%'} fill="#CFD8DC" />
 
             {direction === 0 && <Middle />}
             {direction === 1 && <Right />}

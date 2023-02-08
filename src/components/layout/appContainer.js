@@ -1,4 +1,4 @@
-import { TITLE_FOOTER } from "../../constants/constants";
+// import { TITLE_FOOTER } from "../../constants/constants";
 import React, { useState } from "react";
 import { Navbar } from './navbar/index';
 import Draggable from "react-draggable";
@@ -7,12 +7,12 @@ import { useLocation } from "react-router-dom";
 
 export const AppContainer = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false)
-  const { Footer, Content, } = Layout;
+  const { Content, } = Layout;
   const location = useLocation();
   const titles = {
-    "/" : "التجارب",
+    "/home" : "التجارب",
     "/test2":"الإختبار",
-    "/result2":"النتيجة"
+    "/result2":"النتيجة",
   }
 
   return (
@@ -25,14 +25,14 @@ export const AppContainer = ({ children }) => {
         />
         <Content
           id="preview-content"
-          className="overflow-y-auto overflow-x-hidden"
-          style={{ height: 'calc(100vh - 8.2rem)', display: 'flex', justifyContent: 'center' }}
+          className="overflow-y-auto overflow-x-hidden "
+          style={{ height: 'calc(100vh - 4rem)', display: 'flex', justifyContent: 'center', backgroundColor:'#BFD7ED' }}
         >
           {children}
         </Content>
-        <Footer className="h-16 text-center " >
+        {/* <Footer className="h-16 text-center " >
           {TITLE_FOOTER}
-        </Footer>
+        </Footer> */}
       </Layout>
       <Draggable
         axis="both"

@@ -3,9 +3,9 @@ import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
-import styles from '../../CustomNode/style/style.module.css';
+import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
-import '../../CustomNode/style/led.css'
+import '../../../style/led.css'
 import { Image } from 'antd';
 
 function Lamp({
@@ -71,11 +71,28 @@ function Lamp({
                 >
                     <Image preview={false} src={switchCueArrow} />
                 </div>
-                <div className=" w-44 flex items-center justify-center">
-                    <Handle id="lT" style={{
-                        marginTop: -10, marginRight: 53, background: 'blue'
-                    }} className="z-50 " type="target" position="right" />
-                    <Handle id="lS" style={{ marginTop: 0, marginRight: 44, background: 'red' }} className=" z-50 " type="source" position="right" />
+                <div>
+                    <Handle
+                        id="lT"
+                        type="target"
+                        position="right"
+                        style={{
+                            background: 'blue',
+                            zIndex: 50, 
+                            marginTop:-8,
+                            marginRight:7,
+                        }}
+                    />
+                    <Handle
+                        id="lS"
+                        type="source"
+                        position="right"
+                        style={{
+                            background: 'red',
+                            zIndex: 50,
+                            marginRight:-3,
+                        }}
+                    />
                     <div className="light rotate-90 scale-50">
                         <div className={led}>
                             <span></span>

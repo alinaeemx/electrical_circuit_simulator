@@ -1,5 +1,5 @@
 
-import {create} from "zustand";
+import { create } from "zustand";
 
 export const GlobalStore = create((set) =>
 ({
@@ -14,29 +14,29 @@ export const GlobalStore = create((set) =>
 }))
 
 export const ExpSB2store = create((set) => ({
-    Capacitor: false,
+    Capacitor: JSON.parse(sessionStorage.getItem('Capacitor')) ?? false,
     setCapacitor: (Capacitor) => set({ Capacitor }),
-  
-    DCSource: false,
+
+    DCSource: JSON.parse(sessionStorage.getItem('DCSource')) ?? false,
     setDCSource: (DCSource) => set({ DCSource }),
-  
-    DSwitch: false,
+
+    DSwitch: JSON.parse(sessionStorage.getItem('DSwitch')) ?? false,
     setDSwitch: (DSwitch) => set({ DSwitch }),
-  
-    Lamp: false,
+
+    Lamp: JSON.parse(sessionStorage.getItem('Lamp')) ?? false,
     setLamp: (Lamp) => set({ Lamp }),
-  
-    Resistor: false,
+
+    Resistor: JSON.parse(sessionStorage.getItem('Resistor')) ?? false,
     setResistor: (Resistor) => set({ Resistor }),
 
-    Galvanometer: false,
+    Galvanometer: JSON.parse(sessionStorage.getItem('Galvanometer')) ?? false,
     setGalvanometer: (Galvanometer) => set({ Galvanometer }),
-  
+
     Run: false,
     setRun: (Run) => set({ Run }),
 
     RunError: false,
     setRunError: (RunError) => set({ RunError }),
 
-  
-  }));
+
+}));

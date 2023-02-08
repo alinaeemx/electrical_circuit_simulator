@@ -15,7 +15,7 @@ const HomePage = () => {
         {
           title: 'التجربة الاولى',
           path: 'exp2',
-          image:not
+          image: not
         },
         {
           title: 'شحن و تفريغ المتسعة',
@@ -25,7 +25,7 @@ const HomePage = () => {
         {
           title: 'التجربة الثالثة',
           path: 'exp2',
-          image:not
+          image: not
         },
       ]
     },
@@ -35,17 +35,17 @@ const HomePage = () => {
         {
           title: 'التجربة الرابعة',
           path: 'exp2',
-          image:not
+          image: not
         },
         {
           title: 'التجربة الخامسة',
           path: 'exp2',
-          image:not
+          image: not
         },
         {
           title: 'التجربة السادسة',
           path: 'exp2',
-          image:not
+          image: not
         },
       ]
     },
@@ -55,7 +55,7 @@ const HomePage = () => {
         {
           title: 'التجربة السابعة',
           path: 'exp2',
-          image:not
+          image: not
         },
       ]
     }
@@ -73,12 +73,12 @@ const HomePage = () => {
                     <Card
                       className='borderColor shadow'
                       hoverable
-                      style={{ width: 300, height: 300 }}
+                      style={{ width: 300, height: 300,background:'#F1F1F2' }}
                       cover={item.image && <img className='p-1' alt="" src={item.image} />}
                       key={j}
-                      onClick={() => { navigate(item.path) }}>
+                      onClick={() => { navigate(`/${item.path}`) }}>
                       <Divider />
-                      <Meta title={item.title}  />
+                      <Meta title={item.title} />
                     </Card>
                   )
                   )
