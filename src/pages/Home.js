@@ -34,7 +34,7 @@ const HomePage = () => {
       experiments: [
         {
           title: 'التجربة الرابعة',
-          path: 'exp2',
+          path: 'exp4',
           image: not
         },
         {

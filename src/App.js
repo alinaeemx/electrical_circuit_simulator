@@ -32,7 +32,7 @@ function App() {
         }
       />
       <Route
-        path="exp3"
+        path="exp4"
         element={
           <Suspense fallback={<LoadingSpin />}>
             <Workspace4 />
@@ -67,7 +67,7 @@ function App() {
         />
 
         <Route
-          path="test3"
+          path="test4"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <TestPage4 />
@@ -76,7 +76,7 @@ function App() {
         />
 
         <Route
-          path="result3"
+          path="result4"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <ResultPage4 />
