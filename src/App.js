@@ -9,7 +9,9 @@ const AboutPage = lazy(() => import("./pages/About"));
 const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
 const TestPage2 = lazy(() => import("./components/ExpNo2/testPage2"));
 const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
-
+const Workspace4 = lazy(() => import("./components/ExpNo4/workspace4"));
+const TestPage4 = lazy(() => import("./components/ExpNo4/testPage4"));
+const ResultPage4 = lazy(() => import("./components/ExpNo4/resultPage4"));
 function App() {
   return (
     <Routes>
@@ -26,6 +28,14 @@ function App() {
         element={
           <Suspense fallback={<LoadingSpin />}>
             <Workspace2 />
+          </Suspense>
+        }
+      />
+      <Route
+        path="exp3"
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <Workspace4 />
           </Suspense>
         }
       />
@@ -52,6 +62,24 @@ function App() {
           element={
             <Suspense fallback={<LoadingSpin />}>
               <ResultPage2 />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="test3"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <TestPage4 />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="result3"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <ResultPage4 />
             </Suspense>
           }
         />

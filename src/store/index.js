@@ -30,7 +30,33 @@ export const ExpSB2store = create((set) => ({
     setResistor: (Resistor) => set({ Resistor }),
 
     Galvanometer: JSON.parse(sessionStorage.getItem('Galvanometer')) ?? false,
+    setGalvanometer: (Galvanometer) => set({ Galvanometer }), 
+
+    Run: false,
+    setRun: (Run) => set({ Run }),
+
+    RunError: false,
+    setRunError: (RunError) => set({ RunError }),
+
+
+}));
+
+export const ExpSB3store = create((set) => ({
+   
+    SingeSwitch: JSON.parse(sessionStorage.getItem('SingeSwitch')) ?? false,
+    setSingeSwitch: (SingeSwitch) => set({ SingeSwitch }), 
+
+    Galvanometer: JSON.parse(sessionStorage.getItem('Galvanometer')) ?? false,
     setGalvanometer: (Galvanometer) => set({ Galvanometer }),
+
+    FourLoop: JSON.parse(sessionStorage.getItem('FourLoop')) ?? false,
+    setFourLoop: (FourLoop) => set({ FourLoop }),
+
+    ACSource: JSON.parse(sessionStorage.getItem('ACSource')) ?? false,
+    setACSource: (ACSource) => set({ ACSource }),
+
+    Ammeter: JSON.parse(sessionStorage.getItem('Ammeter')) ?? false,
+    setAmmeter: (Ammeter) => set({ Ammeter }),
 
     Run: false,
     setRun: (Run) => set({ Run }),
