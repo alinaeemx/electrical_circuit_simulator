@@ -15,7 +15,7 @@ function SingeSwitch({
     data
 }) {
     const { Run, setRunError } = ExpSB3store();
-    const { onRunningOpenKey, onRunningCloseKey } = data
+    const { onRunningOpenKey, onRunningCloseKey,setIsCloseSwitch } = data
     const [keyOpenClose, setKeyOpenClose] = useState(openKey);
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
@@ -63,9 +63,11 @@ function SingeSwitch({
                             if (keyOpenClose === openKey) {
                                 setKeyOpenClose(closeKey);
                                 onRunningOpenKey()
+                                setIsCloseSwitch(true)
                             } else {
                                 setKeyOpenClose(openKey);
                                 onRunningCloseKey()
+                                setIsCloseSwitch(false)
                             }
                         } else {
                             setRunError(true)

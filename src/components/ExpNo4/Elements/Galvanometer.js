@@ -9,7 +9,6 @@ import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
-import { GalvanometerIco } from "../../../assets/svgIcons";
 
 function Galvanometer({
     id,
@@ -19,8 +18,8 @@ function Galvanometer({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { direction } = data 
-     useEffect(() => {
+    const { volta, isCloseSwitch } = data 
+    useEffect(() => {
         if (!rotateControlRef.current) {
             return;
         }
@@ -36,7 +35,7 @@ function Galvanometer({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals, direction]);
+    }, [id, updateNodeInternals, volta]);
 
     return (
         <>
@@ -64,17 +63,30 @@ function Galvanometer({
                     style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20  " >
-                    <GalvanometerIco direction={direction ?? 0} />
+                    <div className="absolute text-center flex flex-col items-center justify-center gap-0"
+                        style={{
+                            width: " 54px",
+                            height: "34px",
+                            borderRadius: "5px",
+                            right: "13px",
+                            top: "11px",
+                            background: '#fff'
+                        }}
+                    >
+                        <span className="text-xs text-center">
+                            {isCloseSwitch ? parseFloat(volta).toFixed(2) : 0.0.toFixed(2)} V
+                        </span>
+                    </div>
                     <img
                         src={galvanometerImg}
                         alt="Overlay Image"
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0
-                        }}
+                    // style={{
+                    //     position: "absolute",
+                    //     top: 0,
+                    //     left: 0,
+                    //     right: 0,
+                    //     bottom: 0
+                    // }}
                     />
                 </div>
             </div>

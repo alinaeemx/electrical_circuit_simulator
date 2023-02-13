@@ -21,7 +21,7 @@ function ACSource({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const {runProses}=data
+    const {runProses,frequency}=data 
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -38,7 +38,7 @@ function ACSource({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals,runProses]);
+    }, [id, updateNodeInternals,runProses,frequency]);
     const marks = {
         1.0: '1.0Hz',
         1.3: '1.3Hz',
@@ -60,13 +60,13 @@ function ACSource({
                         style={{
                             width: 220
                         }}
-                        defaultValue={1.0}
+                        defaultValue={frequency}
                         marks={marks}
                         step={0.01}
                         max={2.0}
                         min={1.0}
-                        onAfterChange={(frequency) => {
-                           runProses(frequency)
+                        onAfterChange={(newFrequency) => {
+                           runProses({newFrequency})
                         }}
                     />
                 </div>

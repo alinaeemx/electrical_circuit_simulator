@@ -27,6 +27,12 @@ import CustomConnectionLine from '../CommonElements/CustomConnectionLine';
 import FourLoop from './Elements/FourLoop';
 import ACSource from './Elements/ACSource';
 import Ammeter from './Elements/Ammeter';
+
+import { DEFAULT_L_OUTWITH_HEART } from '../../constants/constants'
+import { DEFAULT_VOLTA } from '../../constants/constants'
+import { DEFAULT_FREQUENCY } from '../../constants/constants'
+import { PI } from '../../constants/constants'
+
 const nodeTypes = {
     Ammeter,
     ACSource,
@@ -64,7 +70,7 @@ const Workspace4 = () => {
     const [edges, setEdges, onEdgesChange] = useEdgesState(Object.assign(
         [],
         JSON.parse(sessionStorage.getItem('edges'))) ?? []);
- 
+
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
         setSingeSwitch, SingeSwitch,
@@ -125,9 +131,9 @@ const Workspace4 = () => {
 
     const stopProcess = () => {
         setRun(false)
-        stopClearInterval() 
+        stopClearInterval()
         TerminationFun()
-        setDirection(0)
+        setTheCurrent(0.0)
 
     }
     const onDrop = useCallback(
@@ -182,32 +188,40 @@ const Workspace4 = () => {
         return incorrectLinks;
     }
     const [ShowInstructions, setShowInstructions] = useState(false);
-    const [numberAmmeter, setNumberAmmeter] = useState(0)
-    const [direction, setDirection] = useState(0)
-   
+
+
+    const [theCurrent, setTheCurrent] = useState(0)
+    const [volta, setVolta] = useState(DEFAULT_VOLTA)
+    const [frequency, setFrequency] = useState(DEFAULT_FREQUENCY) 
+    const [isCloseSwitch, setIsCloseSwitch] = useState(false)
+
     useEffect(() => {
         setNodes((nds) =>
             nds.map((node) => {
-
                 if (node.id === 'switchId1') {
 
                     node.data = {
-                        ...node.data, onRunningOpenKey, onRunningCloseKey
+                        ...node.data, onRunningOpenKey, onRunningCloseKey, setIsCloseSwitch
                     }
                 }
                 if (node.id === 'galvanometerId1') {
-
                     node.data = {
-                        ...node.data, direction,
+                        ...node.data, volta, isCloseSwitch
                     }
                 }
                 if (node.id === 'AmmeterId1') {
 
                     node.data = {
-                        ...node.data, numberAmmeter,
+                        ...node.data, theCurrent,
                     }
                 }
                 if (node.id === 'ACSourceId1') {
+
+                    node.data = {
+                        ...node.data, runProses, frequency
+                    }
+                }
+                if (node.id === 'FourLoopId1') {
 
                     node.data = {
                         ...node.data, runProses
@@ -217,17 +231,20 @@ const Workspace4 = () => {
                 return node;
             })
         );
-    }, [numberAmmeter,setNodes, Run]);
+    }, [theCurrent, setNodes, Run, volta, frequency, isCloseSwitch, setIsCloseSwitch]);
 
-   
 
-    const runProses = () => {
 
+    const runProses = ({ newFrequency = frequency, newL = DEFAULT_L_OUTWITH_HEART }) => {
+        setFrequency(newFrequency) 
+        if (isCloseSwitch) {
+            onRunningOpenKey(newFrequency, newL)
+        }
     }
 
-    const onRunningOpenKey = () => {
-        console.log("open");
-        message.info("open")
+    const onRunningOpenKey = (newFrequency = frequency, newL = DEFAULT_L_OUTWITH_HEART) => {
+        var I = parseFloat((volta / (2 * PI * newFrequency * newL)).toFixed(2))
+        setTheCurrent(I)
         stopClearInterval()
         TerminationFun()
         if (Run) {
@@ -239,76 +256,55 @@ const Workspace4 = () => {
             sessionStorage.setItem("ACSource", ACSource);
             sessionStorage.setItem("Ammeter", Ammeter);
 
-            var x = 0.0
+            var x = 0
+            var v = volta
             startInterval({
                 onHandled: () => {
-                    x = x + 0.25
-                    if (x == 10) {
-                        stopClearInterval()
-                        TerminationFun()
-                        setDirection(0)
-                    } 
-                    setNumberAmmeter(x)
+                    ;
+                    const stream = streamValue(x, I)
+                    setTheCurrent(stream[1])
+                    const streamVolta = streamValue(x, v)
+                    setVolta(streamVolta[1])
+                    x = stream[0]
+                    I = stream[1]
+                    v = streamVolta[1]
 
                 },
-                time: 1000,
+                time: 500,
             })
-
-
             TerminationFun1()
-            setDirection(1)
-        } else {
-            stopClearInterval() 
-            TerminationFun()
-            setDirection(0)
 
+        } else {
+            onRunningCloseKey()
         }
     }
 
+    const streamValue = (x, value) => {
+        if (x == 0) {
+            x = x + 1
+            value = value + 0.01
+        } else if (x == 1) {
+            x = x + 1
+            value = value + 0.01
+        } else if (x == 2) {
+            x = -2
+            value = value - 0.01
+        }
+        else if (x == -2) {
+            x = -1
+            value = value - 0.01
+        }
+        else if (x == -1) {
+            x = 0
+            // value = value
+        }
+        return [x, value]
+    }
+
     const onRunningCloseKey = () => {
-        console.log("close");
-        message.info("close")
-        // stopClearInterval()
-        // TerminationFun()
-        // if (Run) {
-        //     sessionStorage.setItem("edges", JSON.stringify(edges));
-        //     sessionStorage.setItem("nodes", JSON.stringify(nodes)); 
-        //     sessionStorage.setItem("SingeSwitch", SingeSwitch);
-        //     sessionStorage.setItem("Galvanometer", Galvanometer);
-        //     sessionStorage.setItem("FourLoop", FourLoop);
-        //     sessionStorage.setItem("ACSource", ACSource);
-        //     sessionStorage.setItem("Ammeter", Ammeter);
-        //     let body = document.querySelector('.bodyX');
-        //     let open = body.classList.toggle('on');
-        //     if (!open) { open = body.classList.toggle('on'); }
-
-        //     x = capacity
-        //     startInterval({
-        //         onHandled: () => {
-        //             if (x > 0) x--; else x = 0
-        //             if (x === 0) {
-        //                 stopClearInterval()
-        //                 setOnLed('lampId')
-        //                 TerminationFun()
-        //                 setDirection(0)
-
-        //             }
-
-        //             setCapacity(x)
-        //             // setOnLed('lampId0') 
-        //         },
-        //         time: 1000,
-        //     })
-
-        //     TerminationFun2()
-        //     setDirection(-1)
-        // } else {
-        //     stopClearInterval()
-        //     setOnLed('lampId')
-        //     TerminationFun()
-        //     setDirection(0)
-
-        // }
+        setTheCurrent(0.0)
+        stopClearInterval()
+        TerminationFun()
     }
 
     const RunFunc = useCallback(() => {
@@ -369,19 +365,7 @@ const Workspace4 = () => {
         })
         setEdges(animatedEdges)
     }, [edges, nodes])
-    const TerminationFun2 = useCallback(() => {
-        let animatedEdges = edges.map((edge) => {
-            edge.type = 'smoothstep'
-            edge.animated = true
-            edge.style = {
-                strokeWidth: 1.5,
-                stroke: '#FF0072',
-            }
 
-            return edge
-        })
-        setEdges(animatedEdges)
-    }, [edges, nodes])
 
     const navigate = useNavigate();
 
