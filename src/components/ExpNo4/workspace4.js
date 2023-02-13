@@ -20,19 +20,19 @@ import { ExpSB3store } from '../../store/index';
 import { Button, message, Modal, Popconfirm, Typography } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import SingeSwitch from './Elements/SingeSwitch';
-import Galvanometer from './Elements/Galvanometer';
 import { AvatarLogo } from '../layout/AvatarLogo';
 import { useNavigate } from 'react-router-dom';
 import CustomConnectionLine from '../CommonElements/CustomConnectionLine';
-import FourLoop from './Elements/FourLoop';
+import Inductor from './Elements/Inductor';
 import ACSource from './Elements/ACSource';
 import Ammeter from './Elements/Ammeter';
+import Voltmeter from './Elements/Voltmeter';
 const nodeTypes = {
     Ammeter,
     ACSource,
-    FourLoop,
+    Inductor,
     SingeSwitch,
-    Galvanometer,
+    Voltmeter,
 };
 
 let intervalID;
@@ -64,14 +64,14 @@ const Workspace4 = () => {
     const [edges, setEdges, onEdgesChange] = useEdgesState(Object.assign(
         [],
         JSON.parse(sessionStorage.getItem('edges'))) ?? []);
- 
+
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
         setSingeSwitch, SingeSwitch,
-        setGalvanometer, Galvanometer,
-        setFourLoop, FourLoop,
+        setInductor, Inductor,
         setACSource, ACSource,
         setAmmeter, Ammeter,
+        setVoltmeter, Voltmeter,
         setRun, Run,
         setRunError, RunError
     } = ExpSB3store();
@@ -80,13 +80,12 @@ const Workspace4 = () => {
         if (type == 'SingeSwitch') {
             setSingeSwitch(true)
             return `switchId1`
-        } else if (type == 'Galvanometer') {
-            setGalvanometer(true)
-            return `galvanometerId1`
-        }
-        else if (type == 'FourLoop') {
-            setFourLoop(true)
-            return `FourLoopId1`
+        } else if (type == 'Voltmeter') {
+            setVoltmeter(true)
+            return `VoltmeterId1`
+        } else if (type == 'Inductor') {
+            setInductor(true)
+            return `InductorId1`
         } else if (type == 'ACSource') {
             setACSource(true)
             return `ACSourceId1`
@@ -102,11 +101,8 @@ const Workspace4 = () => {
         if (e[0].type == 'SingeSwitch') {
             setSingeSwitch(false)
             return
-        } else if (e[0].type == 'Galvanometer') {
-            setGalvanometer(false)
-            return
-        } else if (e[0].type == 'FourLoop') {
-            setFourLoop(false)
+        } else if (e[0].type == 'Inductor') {
+            setInductor(false)
             return
 
         } else if (e[0].type == 'ACSource') {
@@ -114,6 +110,9 @@ const Workspace4 = () => {
             return
         } else if (e[0].type == 'Ammeter') {
             setAmmeter(false)
+            return
+        } else if (e[0].type == 'Voltmeter') {
+            setVoltmeter(false)
             return
         }
         return
@@ -125,9 +124,8 @@ const Workspace4 = () => {
 
     const stopProcess = () => {
         setRun(false)
-        stopClearInterval() 
+        stopClearInterval()
         TerminationFun()
-        setDirection(0)
 
     }
     const onDrop = useCallback(
@@ -165,12 +163,12 @@ const Workspace4 = () => {
 
     const checkConnections = (edges) => {
         const correctConnections = [
-            "swS_aT",
             "acS_swT",
-            "fS_acT",
-            "aS_fT",
-            "gS_acT",
-            "swS_gT",
+            "swS_vT",
+            "swS_aT",
+            "aS_iT",
+            "iS_acT",
+            "vS_acT",
         ]
         let incorrectLinks = edges.filter((edge) => {
             if (!correctConnections.includes(edge.id)) {
@@ -183,8 +181,8 @@ const Workspace4 = () => {
     }
     const [ShowInstructions, setShowInstructions] = useState(false);
     const [numberAmmeter, setNumberAmmeter] = useState(0)
-    const [direction, setDirection] = useState(0)
-   
+    // const [direction, setDirection] = useState(0)
+
     useEffect(() => {
         setNodes((nds) =>
             nds.map((node) => {
@@ -193,12 +191,6 @@ const Workspace4 = () => {
 
                     node.data = {
                         ...node.data, onRunningOpenKey, onRunningCloseKey
-                    }
-                }
-                if (node.id === 'galvanometerId1') {
-
-                    node.data = {
-                        ...node.data, direction,
                     }
                 }
                 if (node.id === 'AmmeterId1') {
@@ -217,9 +209,9 @@ const Workspace4 = () => {
                 return node;
             })
         );
-    }, [numberAmmeter,setNodes, Run]);
+    }, [numberAmmeter, setNodes, Run]);
 
-   
+
 
     const runProses = () => {
 
@@ -234,10 +226,10 @@ const Workspace4 = () => {
             sessionStorage.setItem("edges", JSON.stringify(edges));
             sessionStorage.setItem("nodes", JSON.stringify(nodes));
             sessionStorage.setItem("SingeSwitch", SingeSwitch);
-            sessionStorage.setItem("Galvanometer", Galvanometer);
-            sessionStorage.setItem("FourLoop", FourLoop);
+            sessionStorage.setItem("Inductor", Inductor);
             sessionStorage.setItem("ACSource", ACSource);
             sessionStorage.setItem("Ammeter", Ammeter);
+            sessionStorage.setItem("Voltmeter", Voltmeter);
 
             var x = 0.0
             startInterval({
@@ -246,8 +238,7 @@ const Workspace4 = () => {
                     if (x == 10) {
                         stopClearInterval()
                         TerminationFun()
-                        setDirection(0)
-                    } 
+                    }
                     setNumberAmmeter(x)
 
                 },
@@ -256,11 +247,9 @@ const Workspace4 = () => {
 
 
             TerminationFun1()
-            setDirection(1)
         } else {
-            stopClearInterval() 
+            stopClearInterval()
             TerminationFun()
-            setDirection(0)
 
         }
     }
@@ -274,8 +263,7 @@ const Workspace4 = () => {
         //     sessionStorage.setItem("edges", JSON.stringify(edges));
         //     sessionStorage.setItem("nodes", JSON.stringify(nodes)); 
         //     sessionStorage.setItem("SingeSwitch", SingeSwitch);
-        //     sessionStorage.setItem("Galvanometer", Galvanometer);
-        //     sessionStorage.setItem("FourLoop", FourLoop);
+        //     sessionStorage.setItem("Inductor", Inductor);
         //     sessionStorage.setItem("ACSource", ACSource);
         //     sessionStorage.setItem("Ammeter", Ammeter);
         //     let body = document.querySelector('.bodyX');
@@ -290,7 +278,6 @@ const Workspace4 = () => {
         //                 stopClearInterval()
         //                 setOnLed('lampId')
         //                 TerminationFun()
-        //                 setDirection(0)
 
         //             }
 
@@ -301,12 +288,10 @@ const Workspace4 = () => {
         //     })
 
         //     TerminationFun2()
-        //     setDirection(-1)
         // } else {
         //     stopClearInterval()
         //     setOnLed('lampId')
         //     TerminationFun()
-        //     setDirection(0)
 
         // }
     }
@@ -369,19 +354,19 @@ const Workspace4 = () => {
         })
         setEdges(animatedEdges)
     }, [edges, nodes])
-    const TerminationFun2 = useCallback(() => {
-        let animatedEdges = edges.map((edge) => {
-            edge.type = 'smoothstep'
-            edge.animated = true
-            edge.style = {
-                strokeWidth: 1.5,
-                stroke: '#FF0072',
-            }
+    // const TerminationFun2 = useCallback(() => {
+    //     let animatedEdges = edges.map((edge) => {
+    //         edge.type = 'smoothstep'
+    //         edge.animated = true
+    //         edge.style = {
+    //             strokeWidth: 1.5,
+    //             stroke: '#FF0072',
+    //         }
 
-            return edge
-        })
-        setEdges(animatedEdges)
-    }, [edges, nodes])
+    //         return edge
+    //     })
+    //     setEdges(animatedEdges)
+    // }, [edges, nodes])
 
     const navigate = useNavigate();
 

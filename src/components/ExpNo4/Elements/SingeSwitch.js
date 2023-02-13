@@ -19,7 +19,7 @@ function SingeSwitch({
     const [keyOpenClose, setKeyOpenClose] = useState(openKey);
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
-    const [rotation, setRotation] = useState(270);
+    const [rotation, setRotation] = useState(0);
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -79,17 +79,19 @@ function SingeSwitch({
                         id='swT'
                         style={{ 
                             background: 'blue',
-                            marginTop: '2px',
+                            marginTop: '4px',
+                            marginLeft: '-2px',
                         }}
-                        isConnectable={isConnectable} className="z-50 " type="target" position="left" />
+                        isConnectable={isConnectable} className="z-50 " type="target" position="bottom" />
                     <Handle
                         id='swS'
                         style={{ 
-                            marginTop: '2px',
-                            background: 'red'
+                            background: 'red',
+                            marginBottom: '4px',
+                            marginLeft: '-2px',
                         }}
                         isConnectable={isConnectable}
-                        className=" z-50" type="source" position="right" />
+                        className=" z-50" type="source" position="top" />
                     
                     <Image preview={false} src={keyOpenClose} />
                 </div>

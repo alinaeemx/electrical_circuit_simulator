@@ -2,8 +2,8 @@ import {
     Button, Checkbox, Dropdown, Image
     // , theme
 } from "antd";
-import fourLoopBack from "../../../assets/images/fourLoopBack.png";
-import fourLoopFront from "../../../assets/images/fourLoopFront.png";
+import inductorBack from "../../../assets/images/inductorBack.png";
+import inductorFront from "../../../assets/images/inductorFront.png";
 import megBack from "../../../assets/images/meg.png";
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
@@ -16,7 +16,7 @@ import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import { MoreOutlined } from "@ant-design/icons";
 
 
-function FourLoop({
+function Inductor({
     id,
     // isConnectable
 }) {
@@ -102,7 +102,7 @@ function FourLoop({
                     className={` flex items-center justify-center `}
                 >
                     <Handle
-                    id="fS"
+                    id="iS"
                     style={{
                         background: 'red',
                         // right: "9px"
@@ -113,7 +113,7 @@ function FourLoop({
                     />
 
                     <Handle
-                        id="fT"
+                        id="iT"
                         style={{
                             background: 'blue',
                             left: "24px",
@@ -121,7 +121,7 @@ function FourLoop({
                         }}
                         className=" z-50 " type="target" position="top" />
                     <div className="absolute">
-                        <Image preview={false} src={fourLoopBack} className="" />
+                        <Image preview={false} src={inductorBack} className="" />
                     </div>
                     {
                         isMegaton &&
@@ -130,11 +130,11 @@ function FourLoop({
                         </div>
                     }
 
-                    <Image style={{ marginTop: "-7px" }} preview={false} src={fourLoopFront} className="" />
+                    <Image style={{ marginTop: "-7px" }} preview={false} src={inductorFront} className="" />
                 </div>
             </div>
         </>
     );
 }
-export default memo(FourLoop);
+export default memo(Inductor);
 

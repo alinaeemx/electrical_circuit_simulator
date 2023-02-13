@@ -49,8 +49,11 @@ export const ExpSB3store = create((set) => ({
     Galvanometer: JSON.parse(sessionStorage.getItem('Galvanometer')) ?? false,
     setGalvanometer: (Galvanometer) => set({ Galvanometer }),
 
-    FourLoop: JSON.parse(sessionStorage.getItem('FourLoop')) ?? false,
-    setFourLoop: (FourLoop) => set({ FourLoop }),
+    Voltmeter: JSON.parse(sessionStorage.getItem('Voltmeter')) ?? false,
+    setVoltmeter: (Voltmeter) => set({ Voltmeter }),
+
+    Inductor: JSON.parse(sessionStorage.getItem('Inductor')) ?? false,
+    setInductor: (Inductor) => set({ Inductor }),
 
     ACSource: JSON.parse(sessionStorage.getItem('ACSource')) ?? false,
     setACSource: (ACSource) => set({ ACSource }),
