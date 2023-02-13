@@ -14,12 +14,15 @@ import styles from '../../../style/style.module.css';
 
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import { MoreOutlined } from "@ant-design/icons";
+import { DEFAULT_L_OUTWITH_HEART, DEFAULT_L_WITH_HEART } from "../../../constants/constants";
 
 
 function Inductor({
     id,
     // isConnectable
+    data
 }) {
+    const {runProses}=data
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
@@ -45,22 +48,15 @@ function Inductor({
         {
             label: <Checkbox defaultChecked={isMegaton} onChange={(e) => {
                 setIsMegaton(e.target.checked);
-                console.log(e.target.checked);
+                if(e.target.checked){
+                    runProses({newL:DEFAULT_L_WITH_HEART})
+                }else{
+                    runProses({newL:DEFAULT_L_OUTWITH_HEART})
+                }
             }} > قلب حديد</Checkbox>,
             key: 'megaton',
-        },
-        // {
-        //     label: <Checkbox defaultChecked={rotation > 0 ? true : false} onChange={(e) => {
-        //         // setIsRotation90(e.target.checked);
-        //         setRotation(e.target.checked ? 90 : 0)
-        //         console.log(e.target.checked);
-        //     }} >دوان 90 درجة</Checkbox>,
-        //     key: 'rotation90',
-        // },
-    ];
-    // const {
-    //     token: { colorBgLayout, colorTextTertiary, colorPrimary },
-    // } = theme.useToken();
+        }, 
+    ]; 
     return (
         <>
             <Dropdown

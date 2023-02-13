@@ -8,7 +8,7 @@ import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
-import switchCueArrow from "../../../assets/images/switchCueArrow.png"; 
+import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 
 function Ammeter({
     id,
@@ -18,7 +18,7 @@ function Ammeter({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { numberAmmeter } = data
+    const { theCurrent } = data 
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -35,7 +35,7 @@ function Ammeter({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals, numberAmmeter]);
+    }, [id, updateNodeInternals, theCurrent]);
 
     return (
         <>
@@ -62,18 +62,18 @@ function Ammeter({
                     id="aT"
                     style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
                     className=" z-50 " type="target" position="bottom" />
-                <div className=" w-20 h-20  " >
+                <div className=" w-20 h-20" >
                     <div className="absolute text-center"
                         style={{
                             width: " 54px",
-                            height: "30px", 
+                            height: "30px",
                             borderRadius: "5px",
                             right: "13px",
                             top: "6px",
                         }}
                     >
                         <span className="text-xs text-center">
-                            {numberAmmeter} A
+                            {parseFloat(theCurrent??0.0).toFixed(2)} A
                         </span>
                     </div>
                     <img
