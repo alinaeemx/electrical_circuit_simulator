@@ -27,7 +27,7 @@ export const ExpSB3 = () => {
                     <div draggable={!SingeSwitch} onDragStart={(event) => {
                         onDragStart(event, 'SingeSwitch')
                     }}>
-                        <img alt='' draggable={false} src={singeSwitch} />
+                        <img style={{ transform: 'rotate(-90deg)' }} alt='' draggable={false} src={singeSwitch} />
                     </div>
                     <span className="mt-1" >Switch</span>
                 </div>
@@ -58,7 +58,6 @@ export const ExpSB3 = () => {
                     <span className="mt-1" >ACSource</span>
                 </div>
             </Tooltip>
-
             <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'اميتير'} >
                 <div
                     style={{ marginBottom: '30px', marginTop: '30px' }}
@@ -72,7 +71,6 @@ export const ExpSB3 = () => {
                     <span className="mt-1" >Ammeter</span>
                 </div>
             </Tooltip>
-
             <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'فولتميتر'} >
                 <div
                     style={{ marginBottom: '30px', marginTop: '30px' }}

@@ -257,14 +257,19 @@ const Workspace2 = () => {
             "cS_dsMiddle",
             "dsBottom_dcT",
         ]
-        let incorrectLinks = edges.filter((edge) => {
+        let incorrectLinksCounter = 0;
+        let checkedEdges = edges.map((edge) => {
             if (!correctConnections.includes(edge.id)) {
-                document.getElementById(edge.id).style.stroke = 'red';
-                return edge.id
+                edge.style = {
+                    strokeWidth: 1.5,
+                    stroke: '#FF0072',
+                }
+                incorrectLinksCounter = incorrectLinksCounter + 1;
             }
-            return null
+            return edge
         })
-        return incorrectLinks;
+        setEdges(checkedEdges)
+        return incorrectLinksCounter;
     }
     const [ShowInstructions, setShowInstructions] = useState(false);
     const [onLed, setOnLed] = useState('lampId')
@@ -395,7 +400,7 @@ const Workspace2 = () => {
     const RunFunc = useCallback(() => {
         if (nodes.length == 7) {
             if (edges.length == 8) {
-                let status = checkConnections(edges).length > 0 ? false : true;
+                let status = checkConnections(edges) > 0 ? false : true;
                 if (status == true) {
                     setRun(true)
                     Message({
@@ -522,7 +527,7 @@ const Workspace2 = () => {
                                     ادوات التجربة
                                 </Typography.Title>
                             </li>
-                            <Typography.Paragraph style={{textAlign:'justify'}} >
+                            <Typography.Paragraph style={{ textAlign: 'justify' }} >
                                 بطارية فولطيتها مناسبة ، كلفانوميتر (G) صفره في وسط التدريجة ، متسعة (C) ذات الصفيحتين المتوازيتين (A) و B) مفتاح مزدوج (k) مقاومة ثابتة (R)، مصباحان متماثلان (L1) و (L2)، اسلاك توصيل.
                             </Typography.Paragraph>
                             <li className='font-bold' >
@@ -537,7 +542,7 @@ const Workspace2 = () => {
                                             عملية الشحن
                                         </Typography.Title>
                                     </li>
-                                    <Typography.Paragraph style={{textAlign:'justify'}} >
+                                    <Typography.Paragraph style={{ textAlign: 'justify' }} >
                                         تربط الدائرة الكهربائية بحيث نجعل المفتاح (K) في الموقع (1) ماذا يعني ذلك؟ يعني ربط صفيحتي المتسعة بين قطبي البطارية لغرض شحنها، لذا نلاحظ انحراف مؤشر الكلفانوميتر (G) لحظيا على أحد جانبي صفر التدرجية (مثلا) نحو اليمين ثم يعود بسرعة إلى الصفر ونلاحظ في الوقت نفسه توهج المصباح ما بضوء ساطع لبرهة من الزمن ثم ينطفئ، وكأن البطارية غير مربوطة في الدائرة. هل يمكننا أن نتسائل الآن عن سبب رجوع مؤشر الكلفانوميتر الى الصفر؟ ان جواب ذلك هو بعد اكتمال عملية شحن المتسعة يتساوى جهد كل صفيحة مع قطب البطارية المتصل بها. فيمكننا القول إن المتسعة صارت مشحونة بكامل شحنتها، وعندها يكون فرق الجهد بين صفيحتي المتسعة يساوي فرق الجهد بين قطبي البطارية، وفي هذه الحالة لا يتوافر فرق الجهد على طرفي المقاومة في الدائرة مما يجعل التيار في الدائرة يساوي صفرا. لذا فإن وجود المتسعة في دائرة التيار المستمر يعد مفتاحا مفتوحا بعد أن تنشحن. وبسبب كون صفيحتي المتسعة معزولتين عن بعضهما، فالإلكترونات تتراكم على الصفيحة B المربوطة بالقطب السالب للبطارية، لذا تشحن بالشحنة السالبة (Q-) في حين تُشحن الصفيحة A المربوطة بالقطب الموجب بالشحنة الموجبة (Q) (وبالمقدار نفسه بطريقة الحث. وقد وجد عملياً ان تيار الشحن يبدأ بمقدار كبير لحظة اغلاق دائرة الشحن ويتناقص مقداره الى الصفر بسرعة عند اكتمال شحنها.
                                     </Typography.Paragraph>
                                     <li>
@@ -545,7 +550,7 @@ const Workspace2 = () => {
                                             عملية التفريغ
                                         </Typography.Title>
                                     </li>
-                                    <Typography.Paragraph style={{textAlign:'justify'}} >
+                                    <Typography.Paragraph style={{ textAlign: 'justify' }} >
                                         نستعمل الدائرة الكهربائية المربوطة في النشاط السابق ولكن نجعل المفتاح (K) في الموقع (2) يعني ربط صفيحتي المتسعة ببعضهما بسلك موصل وبهذا تتم عملية تفريغ المتسعة من شحنتها أي تتعادل شحنة صفيحتيها، لذا نلاحظ انحراف مؤشر الكلفانوميتر (G) لحظيا إلى الجانب الآخر من صفر التدرجية نحو (اليسار)ثم يعود إلى الصفر بسرعة ونلاحظ توهج المصباح 1 في الوقت نفسه بضوء ساطع للحظة ثم ينطفئ. نستنتج من النشاط أن تيارا لحظياً قد انساب في الدائرة الكهربائية يسمى تيار التفريغ، يتلاشى تيار الحر بسرعة (يساوي صفرا) عندما لا يتوافر فرق في الجهد بين صفيحتي المتسعة ان تيار التفريغ يبدأ بمقدار كبير لحظة إغلاق الدائرة (لحظة ربط صفيحتي المتسعة ببعضهما بوساطة سلك موصل) ويهبط إلى الصفر بسرعة بعد إتمام عملية تفريغ المتسعة.
                                     </Typography.Paragraph>
                                 </ul>
@@ -580,7 +585,7 @@ const Workspace2 = () => {
                             >
                                 <Button
                                     className='shadow'
-                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(0,0,0,0.5)', borderWidth: '1px', background:'#E3E3E3' }}
+                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(0,0,0,0.5)', borderWidth: '1px', background: '#E3E3E3' }}
                                     icon={Run ? <BsStopFill color='red' size={'30px'} /> : <BsFillPlayFill size={'30px'} color='green' />}
                                     onClick={() => {
                                         if (RunError) {
@@ -595,7 +600,7 @@ const Workspace2 = () => {
                             <Button
                                 className='font-semibold mr-2 shadow '
                                 onClick={() => navigate('/test2')}
-                                style={{ color: 'white', borderColor: 'rgba(0,0,0,0.5)', borderWidth: '1px', background:'rgba(139,61,255,0.8)' }}
+                                style={{ color: 'white', borderColor: 'rgba(0,0,0,0.5)', borderWidth: '1px', background: 'rgba(139,61,255,0.8)' }}
                             >
                                 إختبر نفسك !
                             </Button>
@@ -623,14 +628,14 @@ const Workspace2 = () => {
                         onEdgeUpdateEnd={onEdgeUpdateEnd}
                         connectionLineComponent={CustomConnectionLine}
                     >
-                        <Controls style={{ display: 'flex', flexDirection: 'column-reverse', borderColor: 'rgba(0,0,0,0.4)', borderWidth: '1px', borderRadius:'4px' }} >
+                        <Controls style={{ display: 'flex', flexDirection: 'column-reverse', borderColor: 'rgba(0,0,0,0.4)', borderWidth: '1px', borderRadius: '4px' }} >
                             <ControlButton
                                 onClick={() => setShowInstructions(true)}
                             >
                                 <GrNotes />
                             </ControlButton>
                             <ControlButton
-                                onClick={() =>{
+                                onClick={() => {
                                     localStorage.clear();
                                     sessionStorage.clear();
                                     window.location.reload(true);

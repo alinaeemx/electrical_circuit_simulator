@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { Image } from "antd";
-import VoltmeterImg from "../../../assets/images/GalvanometerIco.png";
+import VoltmeterImg from "../../../assets/images/voltmeter.png";
 
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
@@ -8,7 +8,9 @@ import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
-import switchCueArrow from "../../../assets/images/switchCueArrow.png"; 
+import switchCueArrow from "../../../assets/images/switchCueArrow.png";
+import '../../../style/seven_segment.css';
+import { Display } from "react-7-segment-display";
 
 function Voltmeter({
     id,
@@ -18,7 +20,7 @@ function Voltmeter({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { volta, isCloseSwitch } = data 
+    const { numberVoltmeter } = data
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -35,7 +37,7 @@ function Voltmeter({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals, volta]);
+    }, [id, updateNodeInternals, numberVoltmeter]);
 
     return (
         <>
@@ -56,36 +58,33 @@ function Voltmeter({
                 </div>
                 <Handle
                     id="vS"
-                    style={{ height: 6, width: 6, background: 'red', borderColor: 'red', marginLeft: 21.2, marginBottom: 17 }}
+                    style={{ height: 8, width: 8, background: 'red', borderColor: 'red', marginLeft: 5, marginBottom:-8.5 }}
                     className=" z-50 " type="source" position="bottom" />
                 <Handle
                     id="vT"
-                    style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
+                    style={{ height: 8, width: 8, background: 'blue', borderColor: 'blue', marginLeft: -5, marginBottom: -8.5 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20  " >
-                    <div className="absolute text-center flex flex-col items-center justify-center gap-0"
+                    <div className="absolute text-center flex justify-center items-center"
                         style={{
                             width: " 54px",
-                            height: "34px",
+                            height: "30px",
                             borderRadius: "5px",
                             right: "13px",
-                            top: "11px",
-                            background: '#fff'
+                            top: "20px",
+                            background: 'white',
                         }}
                     >
-                        <span className="text-xs text-center">
-                            {isCloseSwitch ? parseFloat(volta).toFixed(2) : 0.0.toFixed(2)} V
-                        </span>
+                        <Display height={20} count={4} skew  backgroundColor='white' value="" />
                     </div>
                     <img
                         src={VoltmeterImg}
-                        alt="Overlay Image" 
+                        alt="Overlay Image"
                     />
                 </div>
             </div>
         </>
     );
 }
-
 
 export default memo(Voltmeter);
