@@ -73,7 +73,7 @@ function Ammeter({
                         }}
                     >
                         <span className="text-xs text-center">
-                            {parseFloat(theCurrent).toFixed(2)} A
+                            {parseFloat(theCurrent??0.0).toFixed(2)} A
                         </span>
                     </div>
                     <img

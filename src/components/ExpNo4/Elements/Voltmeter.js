@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { Image } from "antd";
-import VoltmeterImg from "../../../assets/images/voltmeter.png";
+import VoltmeterImg from "../../../assets/images/GalvanometerIco.png";
 
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
@@ -8,8 +8,7 @@ import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
-import switchCueArrow from "../../../assets/images/switchCueArrow.png";
-import { GalvanometerIco } from "../../../assets/svgIcons";
+import switchCueArrow from "../../../assets/images/switchCueArrow.png"; 
 
 function Voltmeter({
     id,
@@ -19,7 +18,7 @@ function Voltmeter({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { volta, isCloseSwitch } = data
+    const { volta, isCloseSwitch } = data 
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -80,12 +79,13 @@ function Voltmeter({
                     </div>
                     <img
                         src={VoltmeterImg}
-                        alt="Overlay Image"
+                        alt="Overlay Image" 
                     />
                 </div>
             </div>
         </>
     );
 }
+
 
 export default memo(Voltmeter);

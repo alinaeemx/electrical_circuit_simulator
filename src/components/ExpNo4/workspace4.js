@@ -203,7 +203,7 @@ const Workspace4 = () => {
                         ...node.data, onRunningOpenKey, onRunningCloseKey, setIsCloseSwitch
                     }
                 }
-                if (node.id === 'galvanometerId1') {
+                if (node.id === 'VoltmeterId1') {
                     node.data = {
                         ...node.data, volta, isCloseSwitch
                     }
@@ -254,7 +254,7 @@ const Workspace4 = () => {
             sessionStorage.setItem("Inductor", Inductor);
             sessionStorage.setItem("ACSource", ACSource);
             sessionStorage.setItem("Ammeter", Ammeter);
-
+            sessionStorage.setItem("Voltmeter", Voltmeter);
             var x = 0
             var v = volta
             startInterval({
