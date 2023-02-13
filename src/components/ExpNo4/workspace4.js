@@ -20,13 +20,13 @@ import { ExpSB3store } from '../../store/index';
 import { Button, message, Modal, Popconfirm, Typography } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 import SingeSwitch from './Elements/SingeSwitch';
-import Galvanometer from './Elements/Galvanometer';
 import { AvatarLogo } from '../layout/AvatarLogo';
 import { useNavigate } from 'react-router-dom';
 import CustomConnectionLine from '../CommonElements/CustomConnectionLine';
-import FourLoop from './Elements/FourLoop';
+import Inductor from './Elements/Inductor';
 import ACSource from './Elements/ACSource';
 import Ammeter from './Elements/Ammeter';
+import Voltmeter from './Elements/Voltmeter';
 
 import { DEFAULT_L_OUTWITH_HEART } from '../../constants/constants'
 import { DEFAULT_VOLTA } from '../../constants/constants'
@@ -36,9 +36,9 @@ import { PI } from '../../constants/constants'
 const nodeTypes = {
     Ammeter,
     ACSource,
-    FourLoop,
+    Inductor,
     SingeSwitch,
-    Galvanometer,
+    Voltmeter,
 };
 
 let intervalID;
@@ -74,10 +74,10 @@ const Workspace4 = () => {
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
         setSingeSwitch, SingeSwitch,
-        setGalvanometer, Galvanometer,
-        setFourLoop, FourLoop,
+        setInductor, Inductor,
         setACSource, ACSource,
         setAmmeter, Ammeter,
+        setVoltmeter, Voltmeter,
         setRun, Run,
         setRunError, RunError
     } = ExpSB3store();
@@ -86,13 +86,12 @@ const Workspace4 = () => {
         if (type == 'SingeSwitch') {
             setSingeSwitch(true)
             return `switchId1`
-        } else if (type == 'Galvanometer') {
-            setGalvanometer(true)
-            return `galvanometerId1`
-        }
-        else if (type == 'FourLoop') {
-            setFourLoop(true)
-            return `FourLoopId1`
+        } else if (type == 'Voltmeter') {
+            setVoltmeter(true)
+            return `VoltmeterId1`
+        } else if (type == 'Inductor') {
+            setInductor(true)
+            return `InductorId1`
         } else if (type == 'ACSource') {
             setACSource(true)
             return `ACSourceId1`
@@ -108,11 +107,8 @@ const Workspace4 = () => {
         if (e[0].type == 'SingeSwitch') {
             setSingeSwitch(false)
             return
-        } else if (e[0].type == 'Galvanometer') {
-            setGalvanometer(false)
-            return
-        } else if (e[0].type == 'FourLoop') {
-            setFourLoop(false)
+        } else if (e[0].type == 'Inductor') {
+            setInductor(false)
             return
 
         } else if (e[0].type == 'ACSource') {
@@ -120,6 +116,9 @@ const Workspace4 = () => {
             return
         } else if (e[0].type == 'Ammeter') {
             setAmmeter(false)
+            return
+        } else if (e[0].type == 'Voltmeter') {
+            setVoltmeter(false)
             return
         }
         return
@@ -171,12 +170,12 @@ const Workspace4 = () => {
 
     const checkConnections = (edges) => {
         const correctConnections = [
-            "swS_aT",
             "acS_swT",
-            "fS_acT",
-            "aS_fT",
-            "gS_acT",
-            "swS_gT",
+            "swS_vT",
+            "swS_aT",
+            "aS_iT",
+            "iS_acT",
+            "vS_acT",
         ]
         let incorrectLinks = edges.filter((edge) => {
             if (!correctConnections.includes(edge.id)) {
@@ -192,7 +191,7 @@ const Workspace4 = () => {
 
     const [theCurrent, setTheCurrent] = useState(0)
     const [volta, setVolta] = useState(DEFAULT_VOLTA)
-    const [frequency, setFrequency] = useState(DEFAULT_FREQUENCY) 
+    const [frequency, setFrequency] = useState(DEFAULT_FREQUENCY)
     const [isCloseSwitch, setIsCloseSwitch] = useState(false)
 
     useEffect(() => {
@@ -235,8 +234,9 @@ const Workspace4 = () => {
 
 
 
+
     const runProses = ({ newFrequency = frequency, newL = DEFAULT_L_OUTWITH_HEART }) => {
-        setFrequency(newFrequency) 
+        setFrequency(newFrequency)
         if (isCloseSwitch) {
             onRunningOpenKey(newFrequency, newL)
         }
@@ -251,8 +251,7 @@ const Workspace4 = () => {
             sessionStorage.setItem("edges", JSON.stringify(edges));
             sessionStorage.setItem("nodes", JSON.stringify(nodes));
             sessionStorage.setItem("SingeSwitch", SingeSwitch);
-            sessionStorage.setItem("Galvanometer", Galvanometer);
-            sessionStorage.setItem("FourLoop", FourLoop);
+            sessionStorage.setItem("Inductor", Inductor);
             sessionStorage.setItem("ACSource", ACSource);
             sessionStorage.setItem("Ammeter", Ammeter);
 

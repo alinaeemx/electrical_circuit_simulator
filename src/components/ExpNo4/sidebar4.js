@@ -1,10 +1,9 @@
 import React from 'react';
-
 import singeSwitch from '../../assets/images/openKey.png';
-import galvanometerIco from '../../assets/images/galvanometer.png';
-import FourLoopIco from '../../assets/images/fourLoop.png';
+import InductorIco from '../../assets/images/inductor.png';
 import ACSourceIco from '../../assets/images/AC.png';
 import AmmeterIco from '../../assets/images/ammeter.png';
+import VoltmeterIco from '../../assets/images/voltmeter.png';
 import { ExpSB3store } from '../../store';
 import { Tooltip } from 'antd';
 
@@ -16,7 +15,7 @@ export const ExpSB3 = () => {
         event.dataTransfer.effectAllowed = 'move';
     };
 
-    const { SingeSwitch, Galvanometer, FourLoop, ACSource, Ammeter } = ExpSB3store();
+    const { SingeSwitch, Inductor, ACSource, Ammeter, Voltmeter } = ExpSB3store();
 
     return (
         <>
@@ -33,33 +32,17 @@ export const ExpSB3 = () => {
                     <span className="mt-1" >Switch</span>
                 </div>
             </Tooltip>
-
-
-            <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'كلفانوميتر'} >
-                <div
-                    style={{ marginBottom: '30px', marginTop: '30px' }}
-                    className={Galvanometer ? `cursor-not-allowed opacity-50 ${sidebarElement}` : sidebarElement}
-                >
-                    <div draggable={!Galvanometer} onDragStart={(event) => {
-                        onDragStart(event, 'Galvanometer')
-                    }} >
-                        <img alt='' draggable={false} src={galvanometerIco} />
-                    </div>
-                    <span className="mt-1" >Galvanometer</span>
-                </div>
-            </Tooltip>
-
             <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'ملف'} >
                 <div
                     style={{ marginBottom: '30px', marginTop: '30px' }}
-                    className={FourLoop ? `cursor-not-allowed opacity-50 ${sidebarElement}` : sidebarElement}
+                    className={Inductor ? `cursor-not-allowed opacity-50 ${sidebarElement}` : sidebarElement}
                 >
-                    <div draggable={!FourLoop} onDragStart={(event) => {
-                        onDragStart(event, 'FourLoop')
+                    <div draggable={!Inductor} onDragStart={(event) => {
+                        onDragStart(event, 'Inductor')
                     }} >
-                        <img alt='' draggable={false} src={FourLoopIco} />
+                        <img alt='' draggable={false} src={InductorIco} />
                     </div>
-                    <span className="mt-1" >FourLoop</span>
+                    <span className="mt-1" >Inductor</span>
                 </div>
             </Tooltip>
             <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'مذبذب كهربائي'} >
@@ -87,6 +70,20 @@ export const ExpSB3 = () => {
                         <img alt='' draggable={false} src={AmmeterIco} />
                     </div>
                     <span className="mt-1" >Ammeter</span>
+                </div>
+            </Tooltip>
+
+            <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'فولتميتر'} >
+                <div
+                    style={{ marginBottom: '30px', marginTop: '30px' }}
+                    className={Voltmeter ? `cursor-not-allowed opacity-50 ${sidebarElement}` : sidebarElement}
+                >
+                    <div draggable={!Voltmeter} onDragStart={(event) => {
+                        onDragStart(event, 'Voltmeter')
+                    }} >
+                        <img alt='' draggable={false} src={VoltmeterIco} />
+                    </div>
+                    <span className="mt-1" >Voltmeter</span>
                 </div>
             </Tooltip>
         </>

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { Image } from "antd";
-import galvanometerImg from "../../../assets/images/GalvanometerIco.png";
+import VoltmeterImg from "../../../assets/images/voltmeter.png";
 
 import React, { useEffect, useState, useRef, memo } from 'react';
 import { Handle, useUpdateNodeInternals } from 'reactflow';
@@ -9,8 +9,9 @@ import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
+import { GalvanometerIco } from "../../../assets/svgIcons";
 
-function Galvanometer({
+function Voltmeter({
     id,
     // isConnectable
     data
@@ -18,7 +19,7 @@ function Galvanometer({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { volta, isCloseSwitch } = data 
+    const { volta, isCloseSwitch } = data
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -55,11 +56,11 @@ function Galvanometer({
                     <Image preview={false} src={switchCueArrow} />
                 </div>
                 <Handle
-                    id="gS"
+                    id="vS"
                     style={{ height: 6, width: 6, background: 'red', borderColor: 'red', marginLeft: 21.2, marginBottom: 17 }}
                     className=" z-50 " type="source" position="bottom" />
                 <Handle
-                    id="gT"
+                    id="vT"
                     style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20  " >
@@ -78,15 +79,8 @@ function Galvanometer({
                         </span>
                     </div>
                     <img
-                        src={galvanometerImg}
+                        src={VoltmeterImg}
                         alt="Overlay Image"
-                    // style={{
-                    //     position: "absolute",
-                    //     top: 0,
-                    //     left: 0,
-                    //     right: 0,
-                    //     bottom: 0
-                    // }}
                     />
                 </div>
             </div>
@@ -94,5 +88,4 @@ function Galvanometer({
     );
 }
 
-export default memo(Galvanometer);
-
+export default memo(Voltmeter);
