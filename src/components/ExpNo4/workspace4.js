@@ -170,14 +170,19 @@ const Workspace4 = () => {
             "iS_acT",
             "vS_acT",
         ]
-        let incorrectLinks = edges.filter((edge) => {
+        let incorrectLinksCounter = 0;
+        let checkedEdges = edges.filter((edge) => {
             if (!correctConnections.includes(edge.id)) {
-                document.getElementById(edge.id).style.stroke = 'red';
-                return edge.id
+                edge.style = {
+                    strokeWidth: 1.5,
+                    stroke: '#FF0072',
+                }
+                incorrectLinksCounter = incorrectLinksCounter + 1;
             }
-            return null
+            return edge
         })
-        return incorrectLinks;
+        setEdges(checkedEdges)
+        return incorrectLinksCounter;
     }
     const [ShowInstructions, setShowInstructions] = useState(false);
     const [numberAmmeter, setNumberAmmeter] = useState(0)
@@ -299,7 +304,7 @@ const Workspace4 = () => {
     const RunFunc = useCallback(() => {
         if (nodes.length == 5) {
             if (edges.length == 6) {
-                let status = checkConnections(edges).length > 0 ? false : true;
+                let status = checkConnections(edges) > 0 ? false : true;
                 if (status == true) {
                     setRun(true)
                     Message({

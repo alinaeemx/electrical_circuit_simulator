@@ -9,7 +9,8 @@ import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
-// import { Display } from "react-7-segment-display";
+import '../../../style/seven_segment.css';
+import { Display } from "react-7-segment-display";
 
 function Voltmeter({
     id,
@@ -57,23 +58,24 @@ function Voltmeter({
                 </div>
                 <Handle
                     id="vS"
-                    style={{ height: 6, width: 6, background: 'red', borderColor: 'red', marginLeft: 21.2, marginBottom: 17 }}
+                    style={{ height: 8, width: 8, background: 'red', borderColor: 'red', marginLeft: 5, marginBottom:-8.5 }}
                     className=" z-50 " type="source" position="bottom" />
                 <Handle
                     id="vT"
-                    style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
+                    style={{ height: 8, width: 8, background: 'blue', borderColor: 'blue', marginLeft: -5, marginBottom: -8.5 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20  " >
-                    <div className="absolute text-center"
+                    <div className="absolute text-center flex justify-center items-center"
                         style={{
                             width: " 54px",
                             height: "30px",
                             borderRadius: "5px",
                             right: "13px",
                             top: "20px",
-                            background:'white'
+                            background: 'white',
                         }}
                     >
+                        <Display height={20} count={4} skew  backgroundColor='white' value="" />
                     </div>
                     <img
                         src={VoltmeterImg}
