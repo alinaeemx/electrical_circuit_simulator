@@ -220,7 +220,7 @@ const Workspace4 = () => {
                         ...node.data, runProses, frequency
                     }
                 }
-                if (node.id === 'FourLoopId1') {
+                if (node.id === 'InductorId1') {
 
                     node.data = {
                         ...node.data, runProses
