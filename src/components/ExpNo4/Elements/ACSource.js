@@ -12,6 +12,8 @@ import { select } from 'd3-selection';
 import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import { MoreOutlined } from "@ant-design/icons";
+import SineWaves from 'sine-waves'
+
 
 function ACSource({
     id,
@@ -21,8 +23,33 @@ function ACSource({
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const {runProses,frequency}=data 
+    const { runProses, frequency } = data
     useEffect(() => {
+
+        new SineWaves({
+            el: document.getElementById('waves'),
+
+            speed: 4,
+
+
+            ease: 'Linear',
+
+            wavesWidth: '100%',
+
+            waves: [
+                {
+                    timeModifier: 2,
+                    lineWidth: 1,
+                    amplitude: 60,
+                    wavelength: 40,
+                    strokeStyle: 'rgba(2, 2, 2, 0.8)'
+                }
+            ],
+
+            // Called on window resize
+
+        });
+
         if (!rotateControlRef.current) {
             return;
         }
@@ -38,7 +65,7 @@ function ACSource({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals,runProses,frequency]);
+    }, [id, updateNodeInternals, runProses, frequency]);
     const marks = {
         1.0: '1.0Hz',
         1.3: '1.3Hz',
@@ -66,85 +93,34 @@ function ACSource({
                         max={2.0}
                         min={1.0}
                         onAfterChange={(newFrequency) => {
-                           runProses({newFrequency})
+                            runProses({ newFrequency })
                         }}
                     />
                 </div>
             ,
             key: 'frequency',
         },
-        // {
-        //     label: <Button type="text" onClick={() => {
-        //         setRotation(90)
-        //     }} >دوان 90 درجة</Button>,
-        //     key: 'rotation90',
-        // },
-        // {
-        //     label: <Button type="text" onClick={() => {
-        //         setRotation(180)
-        //     }} >دوان 180 درجة</Button>,
-        //     key: 'rotation180',
-        // },
-        // {
-        //     label: <Button type="text" onClick={() => {
-        //         setRotation(270)
-        //     }} >دوان 270 درجة</Button>,
-        //     key: 'rotation270',
-        // },
+      
     ];
-   
+
+
+
 
     return (
         <>
-            <Dropdown
-                menu={{
-                    items,
-                }}
-                trigger={['click']} 
-            // }}
-            >
 
-                <div className={`flex flex-row-reverse `}>
-                    <Button
-                        style={{
-                            // color: colorPrimary,
-                            fontSize: "16px",
-                            marginBottom: "8px",
-                            marginRight: "-7px"
-                        }}
-                        type="text"
-                        shape="circle" icon={<MoreOutlined />} />
-                </div>
-            </Dropdown>
-            <div
-                style={{
-                    transform: `rotate(${rotation}deg)`,
-                }}
-                className={styles.node}
-            >
-
-                <div
-                    ref={rotateControlRef}
+            <div className="h-32 w-40 rounded-md border-2 border-slate-600 bg-red-600 flex justify-center items-start">
+                <canvas className="h-16 border-2 rounded-md border-slate-700"
                     style={{
-                        display: 'block',
+                        zIndex: 999,
+                        position: 'absolute',
+                        marginTop: "5px",
+                        width: "150px",
+                       backgroundColor:"white",
                     }}
-                    className={`nodrag ${styles.rotateHandle}`}
-                >
-                    <Image preview={false} src={switchCueArrow} />
-                </div>
-                <div
-                    style={{ width: "50px" }}
-                    className=" flex items-center justify-center "
-                >
-                    <Handle
-                        id="acT"
-                        style={{ background: 'blue' }}
-                        className=" z-50 " type="target" position="right" />
-                    <Handle
-                        id="acS"
-                        style={{ background: 'red' }}
-                        className=" z-50 " type="source" position="left" />
-                    <Image preview={false} src={ACIcon} className="" />
+                    id="waves"></canvas>
+                <div className="bg-white h-4 w-4">
+
                 </div>
             </div>
         </>
