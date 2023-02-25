@@ -4,22 +4,25 @@ import InductorIco from '../../assets/images/inductor.png';
 import ACSourceIco from '../../assets/images/AC.png';
 import AmmeterIco from '../../assets/images/ammeter.png';
 import VoltmeterIco from '../../assets/images/voltmeter.png';
-import { ExpSB3store } from '../../store';
+// import ironIco from '../../assets/images/iron.png';
+import { ExpSB4store } from '../../store';
 import { Tooltip } from 'antd';
 
 
-export const ExpSB3 = () => {
+export const ExpSB4 = () => {
     let sidebarElement = 'w-14 h-14 flex flex-col justify-center items-center text-sm font-bold cursor-pointer '
     const onDragStart = (event, nodeType) => {
         event.dataTransfer.setData('data', nodeType);
         event.dataTransfer.effectAllowed = 'move';
     };
 
-    const { SingeSwitch, Inductor, ACSource, Ammeter, Voltmeter } = ExpSB3store();
+    const { SingeSwitch, Inductor, ACSource, Ammeter, Voltmeter, 
+        // Iron
+     } = ExpSB4store();
 
     return (
         <>
-            <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'مفتاح مزدوج'} >
+            <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'مفتاح'} >
                 <div
                     style={{ marginBottom: '30px', marginTop: '30px' }}
                     className={SingeSwitch ? `cursor-not-allowed opacity-50 ${sidebarElement} ` : sidebarElement}
@@ -27,7 +30,7 @@ export const ExpSB3 = () => {
                     <div draggable={!SingeSwitch} onDragStart={(event) => {
                         onDragStart(event, 'SingeSwitch')
                     }}>
-                        <img style={{ transform: 'rotate(-90deg)' }} alt='' draggable={false} src={singeSwitch} />
+                        <img style={{ transform: 'rotate(90deg)' }} alt='' draggable={false} src={singeSwitch} />
                     </div>
                     <span className="mt-1" >Switch</span>
                 </div>
@@ -45,6 +48,19 @@ export const ExpSB3 = () => {
                     <span className="mt-1" >Inductor</span>
                 </div>
             </Tooltip>
+            {/* <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'قلب حديد'} >
+                <div
+                    style={{ marginBottom: '30px', marginTop: '30px' }}
+                    className={Iron ? `cursor-not-allowed opacity-50 ${sidebarElement}` : sidebarElement}
+                >
+                    <div draggable={!Iron} onDragStart={(event) => {
+                        onDragStart(event, 'Iron')
+                    }} >
+                        <img alt='' draggable={false} src={ironIco} />
+                    </div>
+                    <span className="mt-1" >Iron</span>
+                </div>
+            </Tooltip> */}
             <Tooltip color={'rgba(0,0,0,0.5)'} placement='left' title={'مذبذب كهربائي'} >
                 <div
                     style={{ marginBottom: '30px', marginTop: '30px' }}

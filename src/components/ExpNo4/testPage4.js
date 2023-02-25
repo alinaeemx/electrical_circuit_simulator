@@ -35,8 +35,8 @@ const TestPage2 = () => {
                 saveAnswersFunc();
                 navigate("/result2");
             },
-            bodyStyle: { background: '#F1F1F2', margin: 0 },
-            cancelButtonProps:{style:{background:'#F1F1F2'}},
+            // bodyStyle: { background: '#F1F1F2', margin: 0 },
+            // cancelButtonProps:{style:{background:'#F1F1F2'}},
         });
     };
 

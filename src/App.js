@@ -1,20 +1,29 @@
 
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { PrivateRoute } from "./components/routes/privateRoute";
 import { LoadingSpin } from './components/UI/LoadingSpin';
-const ErrorPage = lazy(() => import('./pages/errorPage'));
+import { PrivateRoute } from "./components/routes/privateRoute";
 const HomePage = lazy(() => import("./pages/Home"));
 const AboutPage = lazy(() => import("./pages/About"));
-const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
+const ErrorPage = lazy(() => import('./pages/errorPage'));
+const TestPage1 = lazy(() => import("./components/ExpNo1/testPage1"));
 const TestPage2 = lazy(() => import("./components/ExpNo2/testPage2"));
-const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
-const Workspace4 = lazy(() => import("./components/ExpNo4/workspace4"));
+const TestPage3 = lazy(() => import("./components/ExpNo3/testPage3"));
 const TestPage4 = lazy(() => import("./components/ExpNo4/testPage4"));
+const Workspace1 = lazy(() => import("./components/ExpNo1/workspace1"));
+const Workspace2 = lazy(() => import("./components/ExpNo2/workspace2"));
+const Workspace3 = lazy(() => import("./components/ExpNo3/workspace3"));
+const Workspace4 = lazy(() => import("./components/ExpNo4/workspace4"));
+const ResultPage1 = lazy(() => import("./components/ExpNo1/resultPage1"));
+const ResultPage2 = lazy(() => import("./components/ExpNo2/resultPage2"));
+const ResultPage3 = lazy(() => import("./components/ExpNo3/resultPage3"));
 const ResultPage4 = lazy(() => import("./components/ExpNo4/resultPage4"));
+
 function App() {
   return (
     <Routes>
+      
+      {/* ABOUT */}
       <Route
         path=""
         element={
@@ -23,6 +32,17 @@ function App() {
           </Suspense>
         }
       />
+
+      {/* WORKSPACES */}
+      <Route
+        path="exp1"
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <Workspace1 />
+          </Suspense>
+        }
+      />
+
       <Route
         path="exp2"
         element={
@@ -31,6 +51,16 @@ function App() {
           </Suspense>
         }
       />
+
+      <Route
+        path="exp3"
+        element={
+          <Suspense fallback={<LoadingSpin />}>
+            <Workspace3 />
+          </Suspense>
+        }
+      />
+
       <Route
         path="exp4"
         element={
@@ -39,6 +69,8 @@ function App() {
           </Suspense>
         }
       />
+
+      {/* HOME */}
       <Route element={<PrivateRoute />}>
         <Route
           path="home"
@@ -48,11 +80,50 @@ function App() {
             </Suspense>
           }
         />
+
+        {/* TEST PAGES */}
+        <Route
+          path="test1"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <TestPage1 />
+            </Suspense>
+          }
+        />
+
         <Route
           path="test2"
           element={
             <Suspense fallback={<LoadingSpin />}>
               <TestPage2 />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="test3"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <TestPage3 />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="test4"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <TestPage4 />
+            </Suspense>
+          }
+        />
+
+        {/* Result Pages */}
+        <Route
+          path="result1"
+          element={
+            <Suspense fallback={<LoadingSpin />}>
+              <ResultPage1 />
             </Suspense>
           }
         />
@@ -67,10 +138,10 @@ function App() {
         />
 
         <Route
-          path="test4"
+          path="result3"
           element={
             <Suspense fallback={<LoadingSpin />}>
-              <TestPage4 />
+              <ResultPage3 />
             </Suspense>
           }
         />
@@ -86,6 +157,7 @@ function App() {
 
       </Route>
 
+      {/* ERROR PAGE */}
       <Route
         path="*"
         element={

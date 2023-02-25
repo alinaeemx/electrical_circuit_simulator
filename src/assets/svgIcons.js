@@ -70,3 +70,41 @@ export const GalvanometerIco = ({ direction }) => {
         </svg>
     )
 }
+
+export const VoltmeterIco = ({ direction }) => {
+    
+    const Zero = () => (<line x1='40' y1='30' x2='40' y2='40' markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} />)
+    
+    const One = () => (<line x1="43" y1="30" x2="40" y2="42" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
+
+    const Two = () => (<line x1="45" y1="31" x2="41" y2="40" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
+
+    const Three = () => (<line x1="49" y1="31" x2="42" y2="40" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
+
+    const Four = () => (<line x1="50" y1="34" x2="42" y2="40" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
+
+    const Six = () => (<line x1="55" y1="39" x2="40" y2="42" markerStart="url(#arrow)" style={{ stroke: 'red', strokeWidth: 1.3 }} ></line>)
+
+    return (
+        <svg style={{ height: '100%', width: '100%' }} >
+            <defs>
+                <marker id="arrow" markerWidth="5" markerHeight="7"
+                    refX="5" refY="3.5" orient="auto">
+                    <polygon points="10 0, 10 7, 0 3.5" fill="red" />
+                </marker>
+            </defs>
+            //x1 + 5 , y1+3 for rotate right
+            //x1 - 5 , y1+3 for rotate left
+            <circle cx={40} cy={40} r={'40%'} fill="#CFD8DC" />
+
+            {direction === 0 && <Zero />}
+            {direction === 1 && <One />}
+            {direction === 2 && <Two />}
+            {direction === 3 && <Three />}
+            {direction === 4 && <Four />}
+            {direction === 5 && <Six />}
+
+            <circle cx={40} cy={43} r={3} fill="#263238" strokeWidth={1.7} stroke="#263238" />
+        </svg>
+    )
+}

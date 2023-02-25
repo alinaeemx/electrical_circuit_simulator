@@ -8,18 +8,21 @@ import { Image } from 'antd';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
 import openKey from "../../../assets/images/openKey.png";
 import closeKey from "../../../assets/images/closeKey.png";
-import { ExpSB3store } from '../../../store';
+import { ExpSB4store } from '../../../store';
 function SingeSwitch({
     id,
     isConnectable,
     data
 }) {
-    const { Run, setRunError } = ExpSB3store();
-    const { onRunningOpenKey, onRunningCloseKey,setIsCloseSwitch } = data
-    const [keyOpenClose, setKeyOpenClose] = useState(openKey);
     const rotateControlRef = useRef(null);
-    const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
+    const updateNodeInternals = useUpdateNodeInternals();
+    const { Run, setRunError, switchStatus, setSwitchStatus } = ExpSB4store();
+    const {
+        startRunning,
+        stopRunning,
+    } = data
+
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -35,7 +38,7 @@ function SingeSwitch({
         });
 
         selection.call(dragHandler);
-    }, [id, updateNodeInternals, onRunningOpenKey, onRunningCloseKey]);
+    }, [id, updateNodeInternals, startRunning, stopRunning, switchStatus]);
 
     return (
         <>
@@ -58,16 +61,14 @@ function SingeSwitch({
                 <div
                     style={{ width: "50px" }}
                     className=" flex items-center justify-center switchKey "
-                    onClick={() => { 
+                    onClick={() => {
                         if (Run) {
-                            if (keyOpenClose === openKey) {
-                                setKeyOpenClose(closeKey);
-                                onRunningOpenKey()
-                                setIsCloseSwitch(true)
+                            if (switchStatus === false) {
+                                setSwitchStatus(true)
+                                startRunning()
                             } else {
-                                setKeyOpenClose(openKey);
-                                onRunningCloseKey()
-                                setIsCloseSwitch(false)
+                                setSwitchStatus(false)
+                                stopRunning()
                             }
                         } else {
                             setRunError(true)
@@ -79,23 +80,29 @@ function SingeSwitch({
                 >
                     <Handle
                         id='swT'
-                        style={{ 
+                        style={{
                             background: 'blue',
-                            marginTop: '4px',
-                            marginLeft: '-2px',
+                            marginBottom: '4px',
+                            marginLeft: '2px',
+                            height: 10,
+                            width: 10,
+                            borderColor: 'blue'
                         }}
                         isConnectable={isConnectable} className="z-50 " type="target" position="bottom" />
                     <Handle
                         id='swS'
-                        style={{ 
+                        style={{
                             background: 'red',
-                            marginBottom: '4px',
-                            marginLeft: '-2px',
+                            marginTop: '4px',
+                            marginLeft: '2px',
+                            height: 10,
+                            width: 10,
+                            borderColor: 'red'
                         }}
                         isConnectable={isConnectable}
                         className=" z-50" type="source" position="top" />
-                    
-                    <Image preview={false} src={keyOpenClose} />
+
+                    <Image preview={false} src={switchStatus === true ? closeKey : openKey} />
                 </div>
             </div>
         </>

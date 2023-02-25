@@ -14,7 +14,7 @@ const HomePage = () => {
       experiments: [
         {
           title: 'التجربة الاولى',
-          path: 'exp2',
+          path: 'exp1',
           image: not
         },
         {
@@ -34,12 +34,12 @@ const HomePage = () => {
       experiments: [
         {
           title: 'التجربة الرابعة',
-          path: 'exp4',
+          path: 'exp3',
           image: not
         },
         {
           title: 'التجربة الخامسة',
-          path: 'exp2',
+          path: 'exp4',
           image: not
         },
         {
@@ -47,18 +47,13 @@ const HomePage = () => {
           path: 'exp2',
           image: not
         },
-      ]
-    },
-    {
-      title: 'الحث الكهرومغناطيسي',
-      experiments: [
         {
           title: 'التجربة السابعة',
           path: 'exp2',
           image: not
         },
       ]
-    }
+    },
   ]
   return (
     <div className='my-7 w-full ' >

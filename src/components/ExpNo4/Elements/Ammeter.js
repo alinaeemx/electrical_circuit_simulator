@@ -9,16 +9,19 @@ import { select } from 'd3-selection';
 
 import styles from '../../../style/style.module.css';
 import switchCueArrow from "../../../assets/images/switchCueArrow.png";
+import { Display } from "react-7-segment-display";
+import { ExpSB4store } from "../../../store";
 
 function Ammeter({
     id,
     // isConnectable
     data
 }) {
+    const { Run, switchStatus, theCurrent } = ExpSB4store();
     const rotateControlRef = useRef(null);
     const updateNodeInternals = useUpdateNodeInternals();
     const [rotation, setRotation] = useState(0);
-    const { theCurrent } = data 
+    // const {  } = data
     useEffect(() => {
         if (!rotateControlRef.current) {
             return;
@@ -56,36 +59,53 @@ function Ammeter({
                 </div>
                 <Handle
                     id="aS"
-                    style={{ height: 6, width: 6, background: 'red', borderColor: 'red', marginLeft: 21.2, marginBottom: 17 }}
+                    style={{ height: 10, width: 10, background: 'red', borderColor: 'red', marginLeft: 24.5, marginBottom: 11 }}
                     className=" z-50 " type="source" position="bottom" />
                 <Handle
                     id="aT"
-                    style={{ height: 6, width: 6, background: 'blue', borderColor: 'blue', marginLeft: -21.2, marginBottom: 17 }}
+                    style={{ height: 10, width: 10, background: 'blue', borderColor: 'blue', marginLeft: -24.5, marginBottom: 11 }}
                     className=" z-50 " type="target" position="bottom" />
                 <div className=" w-20 h-20" >
-                    <div className="absolute text-center"
+                    <div className="absolute flex justify-center items-center"
                         style={{
-                            width: " 54px",
-                            height: "30px",
-                            borderRadius: "5px",
-                            right: "13px",
-                            top: "6px",
+                            height: "35.3px",
+                            right: "9px",
+                            top: "9px",
+                            background: '#E3E3E3',
+                            padding: '3.8px'
                         }}
                     >
-                        <span className="text-xs text-center">
-                            {parseFloat(theCurrent??0.0).toFixed(2)} A
-                        </span>
+                        <div style={{ marginRight: '1px' }} >
+                            <Display
+                                color="black"
+                                skew
+                                height={22}
+                                count={2}
+                                value={
+                                    Run === true && switchStatus === true
+                                        ?
+                                        `${parseInt(theCurrent)}`
+                                        : null
+                                } />
+                        </div>
+                        <div style={{ position: 'absolute', bottom: '2px', color: 'red', filter: 'opacity(0.3) grayscale(0.7)' }} >.</div>
+                        <div style={{ marginLeft: '1px' }} >
+                            <Display
+                                color="black"
+                                skew
+                                height={22}
+                                count={2}
+                                value={
+                                    Run === true && switchStatus === true
+                                        ?
+                                        `${(theCurrent).toFixed(2).split('.')[1]}`
+                                        : null
+                                } />
+                        </div>
                     </div>
                     <img
                         src={ammeterImg}
                         alt="Overlay Image"
-                    // style={{
-                    //     position: "absolute",
-                    //     top: 0,
-                    //     left: 0,
-                    //     right: 0,
-                    //     bottom: 0
-                    // }}
                     />
                 </div>
             </div>

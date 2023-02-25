@@ -1,37 +1,35 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useCallback, useState } from 'react';
 import 'reactflow/dist/style.css';
+import Iron from './Elements/Iron';
+import { ExpSB4 } from './sidebar4';
 import '../../style/workspaceStyle.css';
-import { GrNotes, GrPowerReset } from 'react-icons/gr'
-import { BsFillPlayFill, BsStopFill } from 'react-icons/bs'
+import Ammeter from './Elements/Ammeter';
+import ACSource from './Elements/ACSource';
+import Inductor from './Elements/Inductor';
+import Voltmeter from './Elements/Voltmeter';
+import { useNavigate } from 'react-router-dom';
+import { ExpSB4store } from '../../store/index';
+import SingeSwitch from './Elements/SingeSwitch';
+import { AvatarLogo } from '../layout/AvatarLogo';
+import { WarningOutlined } from '@ant-design/icons';
+import { GrNotes, 
+    // GrPowerReset 
+} from 'react-icons/gr';
+import { BsFillPlayFill, BsStopFill } from 'react-icons/bs';
+import { Button, message, Modal, Popconfirm, Typography } from 'antd';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
+import CustomConnectionLine from '../CommonElements/CustomConnectionLine';
 import {
+    addEdge,
     Controls,
     ReactFlow,
+    updateEdge,
+    ControlButton,
     useEdgesState,
     useNodesState,
     ReactFlowProvider,
-    addEdge,
-    updateEdge,
-    ControlButton,
 } from 'reactflow';
-import { ExpSB3 } from './sidebar4';
-import { ExpSB3store } from '../../store/index';
-import { Button, message, Modal, Popconfirm, Typography } from 'antd';
-import { WarningOutlined } from '@ant-design/icons';
-import SingeSwitch from './Elements/SingeSwitch';
-import { AvatarLogo } from '../layout/AvatarLogo';
-import { useNavigate } from 'react-router-dom';
-import CustomConnectionLine from '../CommonElements/CustomConnectionLine';
-import Inductor from './Elements/Inductor';
-import ACSource from './Elements/ACSource';
-import Ammeter from './Elements/Ammeter';
-import Voltmeter from './Elements/Voltmeter';
-
-import { DEFAULT_L_OUTWITH_HEART } from '../../constants/constants'
-import { DEFAULT_VOLTA } from '../../constants/constants'
-import { DEFAULT_FREQUENCY } from '../../constants/constants'
-import { PI } from '../../constants/constants'
 
 const nodeTypes = {
     Ammeter,
@@ -39,20 +37,59 @@ const nodeTypes = {
     Inductor,
     SingeSwitch,
     Voltmeter,
+    Iron
 };
-
-let intervalID;
-function startInterval({ onHandled, time }) {
-    intervalID = setInterval(onHandled, time);
-}
-
-function stopClearInterval() {
-    clearInterval(intervalID);
-}
 
 const Workspace4 = () => {
 
+    const navigate = useNavigate();
+
+    const reactFlowWrapper = useRef(null);
+
+    const edgeUpdateSuccessful = useRef(true);
+
     const [messageApi, contextHolder] = message.useMessage();
+
+    const [ShowInstructions, setShowInstructions] = useState(false);
+
+    const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+    const [nodes, setNodes, onNodesChange] = useNodesState(
+        // Object.assign([], JSON.parse(sessionStorage.getItem('nodes'))) ?? 
+        []);
+
+    const [edges, setEdges, onEdgesChange] = useEdgesState(
+        // Object.assign([], JSON.parse(sessionStorage.getItem('edges'))) ??
+         []);
+
+    const {
+        setRun, Run,
+        setIron, 
+        // Iron,
+        setAmmeter, 
+        // Ammeter,
+        setACSource,
+        //  ACSource,
+        setInductor, 
+        // Inductor,
+        setRunError, RunError,
+        setVoltmeter, 
+        // Voltmeter,
+        setSingeSwitch, 
+        // SingeSwitch,
+        inductionFactor,
+        setSwitchStatus,
+        setTheCurrent,
+        theVoltage,
+        frequency,
+    } = ExpSB4store();
+
+    const connectionLineStyle = {
+        stroke: 'black',
+        strokeWidth: 1.5,
+        type: 'smoothstep',
+    };
+
     const Message = ({ type, content }) => {
         messageApi.open({
             type: type,
@@ -63,24 +100,6 @@ const Workspace4 = () => {
             },
         });
     };
-    const reactFlowWrapper = useRef(null);
-    const [nodes, setNodes, onNodesChange] = useNodesState(Object.assign(
-        [],
-        JSON.parse(sessionStorage.getItem('nodes'))) ?? []);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(Object.assign(
-        [],
-        JSON.parse(sessionStorage.getItem('edges'))) ?? []);
-
-    const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const {
-        setSingeSwitch, SingeSwitch,
-        setInductor, Inductor,
-        setACSource, ACSource,
-        setAmmeter, Ammeter,
-        setVoltmeter, Voltmeter,
-        setRun, Run,
-        setRunError, RunError
-    } = ExpSB3store();
 
     const getId = (type) => {
         if (type == 'SingeSwitch') {
@@ -95,78 +114,14 @@ const Workspace4 = () => {
         } else if (type == 'ACSource') {
             setACSource(true)
             return `ACSourceId1`
-        }
-        else if (type == 'Ammeter') {
+        } else if (type == 'Ammeter') {
             setAmmeter(true)
             return `AmmeterId1`
+        } else if (type == 'Iron') {
+            setIron(true)
+            return `IronId1`
         }
     }
-
-    const onDeleteNode = useCallback((e) => {
-        stopProcess()
-        if (e[0].type == 'SingeSwitch') {
-            setSingeSwitch(false)
-            return
-        } else if (e[0].type == 'Inductor') {
-            setInductor(false)
-            return
-
-        } else if (e[0].type == 'ACSource') {
-            setACSource(false)
-            return
-        } else if (e[0].type == 'Ammeter') {
-            setAmmeter(false)
-            return
-        } else if (e[0].type == 'Voltmeter') {
-            setVoltmeter(false)
-            return
-        }
-        return
-    }, []);
-    const onDragOver = useCallback((event) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }, []);
-
-    const stopProcess = () => {
-        setRun(false)
-        stopClearInterval()
-        TerminationFun()
-        setTheCurrent(0.0)
-
-    }
-    const onDrop = useCallback(
-        (event) => {
-            event.preventDefault();
-            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData('data');
-
-            if (typeof type === 'undefined' || !type) {
-                return;
-            }
-
-            const position = reactFlowInstance.project({
-                x: event.clientX - reactFlowBounds.left,
-                y: event.clientY - reactFlowBounds.top,
-            });
-            const newNode = {
-                id: getId(type),
-                type,
-                position,
-                data: { label: `${type} node` },
-            };
-
-            setNodes((nds) => nds.concat(newNode));
-        }, [reactFlowInstance]);
-    const onConnect = useCallback((params) => {
-        params.id = params.sourceHandle + "_" + params.targetHandle;
-        params.type = 'smoothstep'
-        params.style = {
-            strokeWidth: 1.5,
-            stroke: 'rgba(0,0,0,1)',
-        }
-        setEdges((eds) => addEdge(params, eds))
-    }, []);
 
     const checkConnections = (edges) => {
         const correctConnections = [
@@ -191,125 +146,77 @@ const Workspace4 = () => {
         setEdges(checkedEdges)
         return incorrectLinksCounter;
     }
-    const [ShowInstructions, setShowInstructions] = useState(false);
 
+    const onDrop = useCallback(
+        (event) => {
+            event.preventDefault();
+            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+            const type = event.dataTransfer.getData('data');
 
-    const [theCurrent, setTheCurrent] = useState(0)
-    const [volta, setVolta] = useState(DEFAULT_VOLTA)
-    const [frequency, setFrequency] = useState(DEFAULT_FREQUENCY)
-    const [isCloseSwitch, setIsCloseSwitch] = useState(false)
+            if (typeof type === 'undefined' || !type) {
+                return;
+            }
 
-    useEffect(() => {
-        setNodes((nds) =>
-            nds.map((node) => {
-                if (node.id === 'switchId1') {
+            const position = reactFlowInstance.project({
+                x: event.clientX - reactFlowBounds.left,
+                y: event.clientY - reactFlowBounds.top,
+            });
+            const newNode = {
+                id: getId(type),
+                type,
+                position,
+                data: { label: `${type} node` },
+            };
+            // if (newNode.id == "ACSourceId1")
+            //     newNode.dragHandle = '.forDrag'
 
-                    node.data = {
-                        ...node.data, onRunningOpenKey, onRunningCloseKey, setIsCloseSwitch
-                    }
-                }
-                if (node.id === 'VoltmeterId1') {
-                    node.data = {
-                        ...node.data, volta, isCloseSwitch
-                    }
-                }
-                if (node.id === 'AmmeterId1') {
+            setNodes((nds) => nds.concat(newNode));
+        }, [reactFlowInstance]);
 
-                    node.data = {
-                        ...node.data, theCurrent,
-                    }
-                }
-                if (node.id === 'ACSourceId1') {
-
-                    node.data = {
-                        ...node.data, runProses, frequency
-                    }
-                }
-                if (node.id === 'InductorId1') {
-
-                    node.data = {
-                        ...node.data, runProses
-                    }
-                }
-
-                return node;
-            })
-        );
-    }, [theCurrent, setNodes, Run, volta, frequency, isCloseSwitch, setIsCloseSwitch]);
-
-
-
-
-    const runProses = ({ newFrequency = frequency, newL = DEFAULT_L_OUTWITH_HEART }) => {
-        setFrequency(newFrequency)
-        if (isCloseSwitch) {
-            onRunningOpenKey(newFrequency, newL)
+    const onConnect = useCallback((params) => {
+        params.id = params.sourceHandle + "_" + params.targetHandle;
+        params.type = 'smoothstep'
+        params.style = {
+            strokeWidth: 1.5,
+            stroke: 'rgba(0,0,0,1)',
         }
-    }
+        setEdges((eds) => addEdge(params, eds))
+    }, []);
 
-    const onRunningOpenKey = (newFrequency = frequency, newL = DEFAULT_L_OUTWITH_HEART) => {
-        var I = parseFloat((volta / (2 * PI * newFrequency * newL)).toFixed(2))
-        setTheCurrent(I)
-        stopClearInterval()
-        TerminationFun()
-        if (Run) {
-            sessionStorage.setItem("edges", JSON.stringify(edges));
-            sessionStorage.setItem("nodes", JSON.stringify(nodes));
-            sessionStorage.setItem("SingeSwitch", SingeSwitch);
-            sessionStorage.setItem("Inductor", Inductor);
-            sessionStorage.setItem("ACSource", ACSource);
-            sessionStorage.setItem("Ammeter", Ammeter);
-            sessionStorage.setItem("Voltmeter", Voltmeter);
-            var x = 0
-            var v = volta
-            startInterval({
-                onHandled: () => {
-                    ;
-                    const stream = streamValue(x, I)
-                    setTheCurrent(stream[1])
-                    const streamVolta = streamValue(x, v)
-                    setVolta(streamVolta[1])
-                    x = stream[0]
-                    I = stream[1]
-                    v = streamVolta[1]
+    const onDragOver = useCallback((event) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    }, []);
 
-                },
-                time: 500,
-            })
-            TerminationFun1()
+    const onDeleteNode = useCallback((e) => {
+        StopFunc()
+        if (e[0].type == 'SingeSwitch') {
+            setSingeSwitch(false)
+            return
+        } else if (e[0].type == 'Inductor') {
+            setInductor(false)
+            return
 
-        } else {
-            onRunningCloseKey()
+        } else if (e[0].type == 'ACSource') {
+            setACSource(false)
+            return
+        } else if (e[0].type == 'Ammeter') {
+            setAmmeter(false)
+            return
+        } else if (e[0].type == 'Voltmeter') {
+            setVoltmeter(false)
+            return
+        } else if (e[0].type == 'Iron') {
+            setIron(false)
+            return
         }
-    }
+        return
+    }, []);
 
-    const streamValue = (x, value) => {
-        if (x == 0) {
-            x = x + 1
-            value = value + 0.01
-        } else if (x == 1) {
-            x = x + 1
-            value = value + 0.01
-        } else if (x == 2) {
-            x = -2
-            value = value - 0.01
-        }
-        else if (x == -2) {
-            x = -1
-            value = value - 0.01
-        }
-        else if (x == -1) {
-            x = 0
-            // value = value
-        }
-        return [x, value]
-    }
-
-    const onRunningCloseKey = () => {
-        setTheCurrent(0.0)
-        stopClearInterval()
-        TerminationFun()
-    }
+    const onDeleteEdge = useCallback(() => {    
+        StopFunc()
+        return
+    }, [])
 
     const RunFunc = useCallback(() => {
         if (nodes.length == 5) {
@@ -344,7 +251,13 @@ const Workspace4 = () => {
         }
     }, [edges, nodes])
 
-    const TerminationFun = useCallback(() => {
+    const StopFunc = () => {
+        setRun(false)
+        setSwitchStatus(false)
+        stopAnimation()
+    }
+
+    const stopAnimation = useCallback(() => {
         let animatedEdges = edges.map((edge) => {
 
             edge.type = 'smoothstep'
@@ -357,7 +270,8 @@ const Workspace4 = () => {
         })
         setEdges(animatedEdges)
     }, [edges, nodes])
-    const TerminationFun1 = useCallback(() => {
+
+    const startAnimation = useCallback(() => {
         let animatedEdges = edges.map((edge) => {
             edge.type = 'smoothstep'
             edge.animated = true
@@ -369,16 +283,6 @@ const Workspace4 = () => {
         })
         setEdges(animatedEdges)
     }, [edges, nodes])
-
-
-    const navigate = useNavigate();
-
-    const connectionLineStyle = {
-        strokeWidth: 1.5,
-        stroke: 'black',
-        type: 'smoothstep',
-    };
-    const edgeUpdateSuccessful = useRef(true);
 
     const onEdgeUpdateStart = useCallback(() => {
         edgeUpdateSuccessful.current = false;
@@ -393,9 +297,94 @@ const Workspace4 = () => {
         if (!edgeUpdateSuccessful.current) {
             setEdges((eds) => eds.filter((e) => e.id !== edge.id));
         }
-
         edgeUpdateSuccessful.current = true;
     }, [setEdges]);
+
+    const equationFunc = ({ L, V, F }) => {
+        let volt = V ? V : theVoltage;
+        let freq = F ? F : frequency;
+        let lFactor = L ? L : inductionFactor;
+        let Xl = 2 * (22 / 7) * freq * lFactor;
+        let I = Xl === 0 ? 0 : volt / Xl;
+        return {
+            theVoltage: volt,
+            theFrequency: freq,
+            theCurrent: I,
+            theResistance: Xl
+        }
+    }
+
+    const startRunning = (L, V, F) => {
+        let volt = V ? V : theVoltage;
+        let freq = F ? F : frequency;
+        let lFactor = L ? L : inductionFactor;
+        let Xl = 2 * (22 / 7) * freq * lFactor;
+        let I = Xl === 0 ? 0 : volt / Xl;
+        stopAnimation();
+        if (Run) {
+            // sessionStorage.setItem("edges", JSON.stringify(edges));
+            // sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            // sessionStorage.setItem("SingeSwitch", SingeSwitch);
+            // sessionStorage.setItem("Inductor", Inductor);
+            // sessionStorage.setItem("ACSource", ACSource);
+            // sessionStorage.setItem("Ammeter", Ammeter);
+            // sessionStorage.setItem("Voltmeter", Voltmeter);
+            // sessionStorage.setItem("Iron", Iron);
+            startAnimation();
+            setTheCurrent(I);
+        } else {
+            stopRunning();
+        }
+
+    }
+
+    const stopRunning = () => {
+        setSwitchStatus(false)
+        stopAnimation();
+    }
+
+    useEffect(() => {
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node.id === 'switchId1') {
+
+                    node.data = {
+                        ...node.data,
+                        stopRunning,
+                        startRunning,
+                    }
+                }
+                if (node.id === 'VoltmeterId1') {
+                    node.data = {
+                        ...node.data,
+                    }
+                }
+                if (node.id === 'AmmeterId1') {
+
+                    node.data = {
+                        ...node.data,
+                    }
+                }
+                if (node.id === 'ACSourceId1') {
+
+                    node.data = {
+                        ...node.data,
+                        equationFunc
+                    }
+                }
+                if (node.id === 'InductorId1') {
+
+                    node.data = {
+                        ...node.data,
+                        equationFunc
+                    }
+                }
+
+                return node;
+            })
+        );
+    }, [setNodes, Run]);
+
     useEffect(() => {
         let anchorsArr = document.getElementsByTagName('a');
         if (anchorsArr.length > 0) {
@@ -405,7 +394,8 @@ const Workspace4 = () => {
                 }
             }
         }
-    }, [])
+    }, []);
+
     return (
         <>
             {
@@ -461,7 +451,7 @@ const Workspace4 = () => {
             {contextHolder}
             <ReactFlowProvider>
                 <aside style={{ width: '100px', backgroundColor: "#F1F1F2", borderColor: 'rgba(0,0,0,0.5)', borderWidth: '1px' }} className='absolute top-32 bottom-32 right-4 shadow-xl z-10 flex flex-col items-center overflow-x-hidden overflow-y-auto rounded-lg' >
-                    <ExpSB3 />
+                    <ExpSB4 />
                 </aside>
                 <aside
                     dir='rtl'
@@ -491,7 +481,7 @@ const Workspace4 = () => {
                                             setRunError(false)
                                         }
                                         Run ?
-                                            stopProcess()
+                                            StopFunc()
                                             : RunFunc()
                                     }}
                                 />
@@ -526,6 +516,7 @@ const Workspace4 = () => {
                         onEdgeUpdateStart={onEdgeUpdateStart}
                         onEdgeUpdateEnd={onEdgeUpdateEnd}
                         connectionLineComponent={CustomConnectionLine}
+                        onEdgesDelete={onDeleteEdge}
                     >
                         <Controls style={{ display: 'flex', flexDirection: 'column-reverse', borderColor: 'rgba(0,0,0,0.4)', borderWidth: '1px', borderRadius: '4px' }} >
                             <ControlButton
@@ -533,7 +524,7 @@ const Workspace4 = () => {
                             >
                                 <GrNotes />
                             </ControlButton>
-                            <ControlButton
+                            {/* <ControlButton
                                 onClick={() => {
                                     localStorage.clear();
                                     sessionStorage.clear();
@@ -541,7 +532,7 @@ const Workspace4 = () => {
                                 }}
                             >
                                 <GrPowerReset />
-                            </ControlButton>
+                            </ControlButton> */}
                         </Controls >
                     </ReactFlow>
                 </div>

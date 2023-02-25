@@ -1,5 +1,5 @@
-import { Layout, Spin } from 'antd'
 import React from 'react'
+import { Layout, Spin } from 'antd'
 
 export const LoadingSpin = () => {
   return (

@@ -3,7 +3,9 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import 'reactflow/dist/style.css';
 import '../../style/workspaceStyle.css';
-import { GrNotes, GrPowerReset } from 'react-icons/gr'
+import { GrNotes, 
+    // GrPowerReset
+ } from 'react-icons/gr'
 import { BsFillPlayFill, BsStopFill } from 'react-icons/bs'
 import {
     Controls,
@@ -61,14 +63,17 @@ const Workspace2 = () => {
         });
     };
     const reactFlowWrapper = useRef(null);
-    const [nodes, setNodes, onNodesChange] = useNodesState(Object.assign(
-        [],
-        JSON.parse(sessionStorage.getItem('nodes'))) ?? []);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(Object.assign(
-        [],
-        JSON.parse(sessionStorage.getItem('edges'))) ?? []);
+    const [nodes, setNodes, onNodesChange] = useNodesState(
+        // Object.assign( [], JSON.parse(sessionStorage.getItem('nodes'))) ?? 
+        []);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(
+        // Object.assign( [], JSON.parse(sessionStorage.getItem('edges'))) ??
+        []);
     const [lampId, setLampId] = useState(0);
-    const [chargingCircuit, setChargingCircuit] = useState(parseInt(sessionStorage.getItem('chargingCircuit') ?? 0));
+    const [chargingCircuit, setChargingCircuit] = useState(
+        // parseInt(sessionStorage.getItem('chargingCircuit') ?? 0)
+        0
+    );
     const lampsId = useRef([
         {
             id: 'lampId0',
@@ -113,12 +118,18 @@ const Workspace2 = () => {
     ]
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
-        setDSwitch, DSwitch,
-        setLamp, Lamp,
-        setDCSource, DCSource,
-        setCapacitor, Capacitor,
-        setResistor, Resistor,
-        setGalvanometer, Galvanometer,
+        setDSwitch, 
+        // DSwitch,
+        setLamp, 
+        // Lamp,
+        setDCSource, 
+        // DCSource,
+        setCapacitor, 
+        // Capacitor,
+        setResistor, 
+        // Resistor,
+        setGalvanometer, 
+        // Galvanometer,
         setRun, Run,
         setRunError, RunError
     } = ExpSB2store();
@@ -189,6 +200,11 @@ const Workspace2 = () => {
         }
         return
     }, [lampId]);
+
+    const onDeleteEdge = useCallback(() => {    
+        stopProcess()
+        return
+    }, [])
     const onDragOver = useCallback((event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
@@ -309,15 +325,15 @@ const Workspace2 = () => {
         stopClearInterval()
         TerminationFun()
         if (Run) {
-            sessionStorage.setItem("edges", JSON.stringify(edges));
-            sessionStorage.setItem("nodes", JSON.stringify(nodes));
-            sessionStorage.setItem("chargingCircuit", chargingCircuit);
-            sessionStorage.setItem("Capacitor", Capacitor);
-            sessionStorage.setItem("DCSource", DCSource);
-            sessionStorage.setItem("DSwitch", DSwitch);
-            sessionStorage.setItem("Lamp", Lamp);
-            sessionStorage.setItem("Resistor", Resistor);
-            sessionStorage.setItem("Galvanometer", Galvanometer);
+            // sessionStorage.setItem("edges", JSON.stringify(edges));
+            // sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            // sessionStorage.setItem("chargingCircuit", chargingCircuit);
+            // sessionStorage.setItem("Capacitor", Capacitor);
+            // sessionStorage.setItem("DCSource", DCSource);
+            // sessionStorage.setItem("DSwitch", DSwitch);
+            // sessionStorage.setItem("Lamp", Lamp);
+            // sessionStorage.setItem("Resistor", Resistor);
+            // sessionStorage.setItem("Galvanometer", Galvanometer);
             let body = document.querySelector('.bodyX');
             let open = body.classList.toggle('on');
             if (!open) { open = body.classList.toggle('on'); }
@@ -354,15 +370,15 @@ const Workspace2 = () => {
         stopClearInterval()
         TerminationFun()
         if (Run) {
-            sessionStorage.setItem("edges", JSON.stringify(edges));
-            sessionStorage.setItem("nodes", JSON.stringify(nodes));
-            sessionStorage.setItem("chargingCircuit", chargingCircuit);
-            sessionStorage.setItem("Capacitor", Capacitor);
-            sessionStorage.setItem("DCSource", DCSource);
-            sessionStorage.setItem("DSwitch", DSwitch);
-            sessionStorage.setItem("Lamp", Lamp);
-            sessionStorage.setItem("Resistor", Resistor);
-            sessionStorage.setItem("Galvanometer", Galvanometer);
+            // sessionStorage.setItem("edges", JSON.stringify(edges));
+            // sessionStorage.setItem("nodes", JSON.stringify(nodes));
+            // sessionStorage.setItem("chargingCircuit", chargingCircuit);
+            // sessionStorage.setItem("Capacitor", Capacitor);
+            // sessionStorage.setItem("DCSource", DCSource);
+            // sessionStorage.setItem("DSwitch", DSwitch);
+            // sessionStorage.setItem("Lamp", Lamp);
+            // sessionStorage.setItem("Resistor", Resistor);
+            // sessionStorage.setItem("Galvanometer", Galvanometer);
             let body = document.querySelector('.bodyX');
             let open = body.classList.toggle('on');
             if (!open) { open = body.classList.toggle('on'); }
@@ -627,6 +643,7 @@ const Workspace2 = () => {
                         onEdgeUpdateStart={onEdgeUpdateStart}
                         onEdgeUpdateEnd={onEdgeUpdateEnd}
                         connectionLineComponent={CustomConnectionLine}
+                        onEdgesDelete={onDeleteEdge}
                     >
                         <Controls style={{ display: 'flex', flexDirection: 'column-reverse', borderColor: 'rgba(0,0,0,0.4)', borderWidth: '1px', borderRadius: '4px' }} >
                             <ControlButton
@@ -634,7 +651,7 @@ const Workspace2 = () => {
                             >
                                 <GrNotes />
                             </ControlButton>
-                            <ControlButton
+                            {/* <ControlButton
                                 onClick={() => {
                                     localStorage.clear();
                                     sessionStorage.clear();
@@ -642,7 +659,7 @@ const Workspace2 = () => {
                                 }}
                             >
                                 <GrPowerReset />
-                            </ControlButton>
+                            </ControlButton> */}
                         </Controls >
                     </ReactFlow>
                 </div>
